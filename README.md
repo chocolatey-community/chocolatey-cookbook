@@ -1,8 +1,7 @@
 Description
 ===========
 
-Manage an htpasswd file.
-If htpasswd exe isn't found, we install a python implementation.
+Install Chocolatey with the default recipe and manage package with LWRP
 
 Requirements
 ============
@@ -37,21 +36,17 @@ htpasswd
 
 include_recipe "chocolatey"
 
-chocolatey "sysinternals"
-chocolatey "7zip"
-chocolatey "notepadplusplus"
-chocolatey "GoogleChrome"
-chocolatey "Console2"
+%w{ sysinternals 7zip notepadplusplus GoogleChrome Console2}.each do |pack|
+  chocolatey pack
+end
 
-chocolatey "bash" do
-  source "cygwin"
+%w{ bash openssh grep}.each do |pack|
+  chocolatey pack do
+    source "cygwin"
+  end
 end
-chocolatey "openssh" do
-  source "cygwin"
-end
-chocolatey "grep" do
-  source "cygwin"
-end
+
 
 chocolatey "DotNet4.5"
+
 chocolatey "PowerShell"
