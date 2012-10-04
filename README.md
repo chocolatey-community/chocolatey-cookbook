@@ -35,28 +35,23 @@ htpasswd
 
 # Example
 
+include_recipe "chocolatey"
+
 chocolatey "sysinternals"
-
 chocolatey "7zip"
-
 chocolatey "notepadplusplus"
-
 chocolatey "GoogleChrome"
-
 chocolatey "Console2"
 
 chocolatey "bash" do
   source "cygwin"
 end
-
 chocolatey "openssh" do
   source "cygwin"
 end
-
 chocolatey "grep" do
   source "cygwin"
 end
 
 chocolatey "DotNet4.5"
-
 chocolatey "PowerShell"
