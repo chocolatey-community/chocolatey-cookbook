@@ -18,6 +18,8 @@
 # limitations under the License.
 #
 
+include_recipe "powershell"
+
 powershell "install chocolatey" do
   code 'iex ((new-object net.webclient).DownloadString("http://bit.ly/psChocInstall"))'
 end
