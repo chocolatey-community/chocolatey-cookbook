@@ -21,7 +21,7 @@
 include_recipe "powershell"
 
 powershell "install chocolatey" do
-  code 'iex ((new-object net.webclient).DownloadString("http://bit.ly/psChocInstall"))'
+  code 'iex ((new-object net.webclient).DownloadString("https://raw.github.com/chocolatey/chocolatey/master/chocolateyInstall/InstallChocolatey.ps1"))'
   notifies :create, "ruby_block[reload path]", :immediately
 end
 
@@ -39,6 +39,6 @@ ruby_block "reload path" do
     @send_message ||= Win32API.new('user32', 'SendMessageTimeout', 'LLLPLLP', 'L')
     @send_message.call(HWND_BROADCAST, WM_SETTINGCHANGE, 0, 'Environment', flags, 5000, result)
   end
-  action :nothing
+  action :create
   only_if { RUBY_PLATFORM =~ /mswin|mingw32|windows/ }
 end
