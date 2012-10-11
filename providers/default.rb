@@ -39,18 +39,18 @@ end
 
 action :install do
   execute "install package" do
-    command "cinst " + new_resource.package + cmd_build
+    command ::File.join(node['chocolatey']['bin_path'],"cinst.bat") + " " + new_resource.package + cmd_build
   end
 end
 
 action :upgrade do
   execute "update package" do
-    command "chocolatey update " + new_resource.package + cmd_build
+    command ::File.join(node['chocolatey']['bin_path'],"chocolatey.bat") + " update " + new_resource.package + cmd_build
   end
 end
 
 action :remove do
   execute "uninstall package" do
-    command "chocolatey uninstall " + new_resource.package + cmd_build
+    command ::File.join(node['chocolatey']['bin_path'],"chocolatey.bat") + " uninstall " + new_resource.package + cmd_build
   end
 end

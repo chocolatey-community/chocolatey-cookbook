@@ -23,7 +23,7 @@ include_recipe "powershell"
 powershell "install chocolatey" do
   code 'iex ((new-object net.webclient).DownloadString("https://raw.github.com/chocolatey/chocolatey/master/chocolateyInstall/InstallChocolatey.ps1"))'
   notifies :create, "ruby_block[reload path]", :immediately
-  not_if { ::File.exist?( ::File.join(ENV['SYSTEMDRIVE'], "Chocolatey", "bin") ) }
+  not_if { ::File.exist?( ::File.join(node['chocolatey']['bin_path'], "chocolatey.bat") ) }
 end
 
 ruby_block "reload path" do
