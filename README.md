@@ -34,19 +34,19 @@ htpasswd
 
 # Example
 
-include_recipe "chocolatey"
+    include_recipe "chocolatey"
+    
+    %w{ sysinternals 7zip notepadplusplus GoogleChrome Console2}.each do |pack|
+      chocolatey pack
+    end
+    
+    %w{ bash openssh grep}.each do |pack|
+      chocolatey pack do
+        source "cygwin"
+      end
+    end
 
-%w{ sysinternals 7zip notepadplusplus GoogleChrome Console2}.each do |pack|
-  chocolatey pack
-end
 
-%w{ bash openssh grep}.each do |pack|
-  chocolatey pack do
-    source "cygwin"
-  end
-end
+    chocolatey "DotNet4.5"
 
-
-chocolatey "DotNet4.5"
-
-chocolatey "PowerShell"
+    chocolatey "PowerShell"
