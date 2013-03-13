@@ -19,9 +19,10 @@
 #
 
 include_recipe "powershell"
+uri = node['chocolatey']['Uri']
 
 powershell "install chocolatey" do
-  code "iex ((new-object net.webclient).DownloadString(\"#{default['chocolatey']['Uri']}\"))"
+  code "iex ((new-object net.webclient).DownloadString('#{uri}'))"
   not_if { ::File.exist?( ::File.join(node['chocolatey']['bin_path'], "chocolatey.bat") ) }
 end
 
