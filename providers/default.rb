@@ -17,9 +17,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-#Remote commands need to support source. 
-
-
 
 # Support whyrun
 def whyrun_supported?
@@ -44,6 +41,18 @@ def cmd_build
   end
   return output
 end
+
+def cmd_build_without_version
+  output = ""  
+  if new_resource.source
+    output << " -source #{new_resource.source}"
+  end
+  if new_resource.args
+    output << " -installArgs #{new_resource.args}"
+  end
+  return output
+end
+
 
 action :install do  
  if @current_resource.exists
@@ -73,8 +82,7 @@ action :upgrade do
   end  
 end
 
-action :remove do
-  
+action :remove do  
   if @current_resource.exists
     converge_by("uninstall package #{ @new_resource }") do
        execute "uninstall package" do
@@ -85,6 +93,7 @@ action :remove do
     Chef::Log.info "#{ @new_resource } not installed - nothing to do."
   end
 end
+
 
 def load_current_resource
   @current_resource = Chef::Resource::Chocolatey.new(@new_resource.name)
@@ -112,7 +121,7 @@ def package_exists?(name, version)
           Chef::Log.info "Found local package '#{name}' '#{version}'"
           return true
         else
-          Chef::Log.info "package: '#{lines[0]}' '#{lines[1]}'"
+          Chef::Log.debug "package: '#{lines[0]}' '#{lines[1]}'"
         end          
       end
     end
@@ -128,7 +137,7 @@ def upgradePackage(name, version)
     Chef::Log.info "#{ @new_resource } not installed - update will install"          
     converge_by("update package #{ @new_resource } to #{version} version ") do
       execute "update package" do
-        command ::File.join(node['chocolatey']['bin_path'],"chocolatey.bat") + " update " + new_resource.package + "-version #{version}"
+        command ::File.join(node['chocolatey']['bin_path'],"chocolatey.bat") + " update " + new_resource.package + "-version #{version} " + cmd_build_without_version 
       end
     end    
 end
@@ -179,10 +188,9 @@ def upgradeTolatest (name)
 end
 
 def upgradeToVersion(name, version)
-
     converge_by("update package #{name } to version #{version}") do
       execute "update package" do
-        command ::File.join(node['chocolatey']['bin_path'],"chocolatey.bat") + " update " + " #{name} " + cmd_build
+        command ::File.join(node['chocolatey']['bin_path'],"chocolatey.bat") + " update " + " #{name} " +  " -version #{version} "  + cmd_build_without_version
       end
     end
 end 
