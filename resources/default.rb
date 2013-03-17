@@ -9,3 +9,5 @@ def initialize(*args)
 	super
 	@action = :install
 end
+
+attr_accessor :exists

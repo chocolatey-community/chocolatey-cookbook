@@ -21,12 +21,69 @@
 include_recipe "powershell"
 uri = node['chocolatey']['Uri']
 
-powershell "install chocolatey" do
-  code "iex ((new-object net.webclient).DownloadString('#{uri}'))"
-  not_if { ::File.exist?( ::File.join(node['chocolatey']['bin_path'], "chocolatey.bat") ) }
+#powershell "install chocolatey" do
+#  code "iex ((new-object net.webclient).DownloadString('#{uri}'))"
+#  not_if { ::File.exist?( ::File.join(node['chocolatey']['bin_path'], "chocolatey.bat") ) }
+#end
+
+chocolatey "virtualbox" do
+    Chef::Log.info "XXXX > virtualbox" # scilent install doesn't seem to do this?
+    #source "#{source}"
+    version "4.2.8"
+    #args "#{args}"
+    action :upgrade
+    #notifies :run, "execute[RegisterGoService]", :immediately
 end
 
-file "cygwin log" do
-  path "C:/cygwin/var/log/setup.log"
-  action :delete
+
+
+=begin
+chocolatey "virtualbox" do
+    Chef::Log.info "XXXX > virtualbox" # scilent install doesn't seem to do this?
+    #source "#{source}"
+    version "4.2.8"
+    #args "#{args}"
+    action :remove
+    #notifies :run, "execute[RegisterGoService]", :immediately
 end
+
+chocolatey "virtualbox" do
+    Chef::Log.info "XXXX > virtualbox" # scilent install doesn't seem to do this?
+    #source "#{source}"
+    #version "4.2.8"
+    #args "#{args}"
+    action :remove
+    #notifies :run, "execute[RegisterGoService]", :immediately
+end
+
+
+chocolatey "virtualbox" do
+	Chef::Log.info "XXXX > virtualbox" # scilent install doesn't seem to do this?
+    #source "#{source}"
+    #version "4.2.8"
+    #args "#{args}"
+    action :install
+    #notifies :run, "execute[RegisterGoService]", :immediately
+end
+
+
+chocolatey "virtualbox" do
+	Chef::Log.info "XXXX > virtualbox" # scilent install doesn't seem to do this?
+    #source "#{source}"
+    version "4.2.8"
+    #args "#{args}"
+    action :install
+    #notifies :run, "execute[RegisterGoService]", :immediately
+end
+
+chocolatey "nofound" do
+	Chef::Log.info "XXXX > 7zip" # scilent install doesn't seem to do this?
+    #source "#{source}"
+    version "1.2.3"
+    #args "#{args}"
+    action :install
+    #notifies :run, "execute[RegisterGoService]", :immediately
+end
+
+=end
+
