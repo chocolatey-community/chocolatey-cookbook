@@ -25,11 +25,41 @@ uri = node['chocolatey']['Uri']
 #  code "iex ((new-object net.webclient).DownloadString('#{uri}'))"
 #  not_if { ::File.exist?( ::File.join(node['chocolatey']['bin_path'], "chocolatey.bat") ) }
 #end
+# new upgrade install to specific version
+chocolatey "Console2" do
+    Chef::Log.info "XXXX > virtualbox" 
+    #source "#{source}"
+    version "2.0"
+    #args "#{args}"
+    action :upgrade
+    #notifies :run, "execute[RegisterGoService]", :immediately
+end
 
-chocolatey "virtualbox" do
+#To latest 
+chocolatey "Fiddler" do
+    Chef::Log.info "XXXX > virtualbox" 
+    #source "#{source}"
+    #version "2.3.3.4"
+    #args "#{args}"
+    action :upgrade
+    #notifies :run, "execute[RegisterGoService]", :immediately
+end
+
+#To exsisting version
+chocolatey "Fiddler" do
     Chef::Log.info "XXXX > virtualbox" # scilent install doesn't seem to do this?
     #source "#{source}"
-    version "4.2.8"
+    version "2.3.3.4"
+    #args "#{args}"
+    action :upgrade
+    #notifies :run, "execute[RegisterGoService]", :immediately
+end
+
+#To specific version
+chocolatey "Fiddler" do
+    Chef::Log.info "XXXX > virtualbox" # scilent install doesn't seem to do this?
+    #source "#{source}"
+    version "2.3.7.4"
     #args "#{args}"
     action :upgrade
     #notifies :run, "execute[RegisterGoService]", :immediately
