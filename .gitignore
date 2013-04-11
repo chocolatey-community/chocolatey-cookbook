@@ -1,0 +1,6 @@
+cookbooks
+nuget.exe 
+spec
+Cheffile
+build.cmd
+build.ps1
