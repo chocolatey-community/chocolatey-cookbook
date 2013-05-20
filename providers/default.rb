@@ -39,7 +39,8 @@ def cmd_build
     output << " -source #{new_resource.source}"
   end
   if !new_resource.args.to_s.empty?
-    output << " -installArgs #{new_resource.args}"
+    Chef::Log.debug "-ia \`\"#{new_resource.args}\`\""        
+    output << " -ia \`\"#{new_resource.args}\`\""
   end
   return output
 end
@@ -50,7 +51,8 @@ def cmd_build_without_version
     output << " -source #{new_resource.source}"
   end
   if !new_resource.args.to_s.empty?
-    output << " -installArgs #{new_resource.args}"
+    Chef::Log.debug "-ia \`\"#{new_resource.args}\`\""        
+    output << " -ia \`\"#{new_resource.args}\`\""
   end
   return output
 end
@@ -61,7 +63,7 @@ action :install do
     Chef::Log.info "#{ @new_resource } already installed - nothing to do."
   else
     converge_by("install package #{ @new_resource }") do       
-       Chef::Log.debug "running chocolatey with '.\\chocolatey.ps1' install  #{new_resource.package} #{cmd_build}" 
+       Chef::Log.debug "running chocolatey with '.\\chocolatey.ps1' install  #{new_resource.package}  #{cmd_build} -verbose" 
        
        directory CHOCOLATEY_FAILED_PATH do
         action :create
@@ -75,7 +77,8 @@ action :install do
             {
               [System.Threading.Thread]::CurrentThread.CurrentCulture = ''; 
               [System.Threading.Thread]::CurrentThread.CurrentUICulture = '';
-              $output = & '.\\chocolatey.ps1' install  #{new_resource.package} #{cmd_build}              
+              $psargs = "install  #{new_resource.package} #{cmd_build} -verbose"
+              Invoke-Expression ".\\chocolatey.ps1 $psargs"                   
             }
             catch [Exception]
             {              
