@@ -18,10 +18,15 @@
 # limitations under the License.
 #
 
-include_recipe "powershell"
-uri = node['chocolatey']['Uri']
+case node['platform_family']
+when "windows"
+	include_recipe "powershell"
+	uri = node['chocolatey']['Uri']
 
-powershell "install chocolatey" do
-  code "iex ((new-object net.webclient).DownloadString('#{uri}'))"
-  not_if { ::File.exist?( ::File.join(node['chocolatey']['bin_path'], "chocolatey.bat") ) }
+	powershell "install chocolatey" do
+	  code "iex ((new-object net.webclient).DownloadString('#{uri}'))"
+	  not_if { ::File.exist?( ::File.join(node['chocolatey']['bin_path'], "chocolatey.bat") ) }
+	end
+else
+	
 end
