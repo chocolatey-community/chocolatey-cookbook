@@ -16,250 +16,125 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-CHOCOLATEY_ROOT = "C:\\Chocolatey"
-CHOCOLATEY_PATH = "#{CHOCOLATEY_ROOT}\\chocolateyinstall"
-CHOCOLATEY_LIB_PATH = "#{CHOCOLATEY_ROOT}\\lib"
-CHOCOLATEY_FAILED_PATH = "#{CHOCOLATEY_ROOT}\\failed"
 # Support whyrun
 def whyrun_supported?
   true
 end
-
-def initialize(*args)
-  super
-  @action = :install
-end
-
-def cmd_build
-  output = ""
-  if new_resource.version
-    output << " -version #{new_resource.version}"
-  end
-  if new_resource.source
-    output << " -source #{new_resource.source}"
-  end
-  if !new_resource.args.to_s.empty?
-    Chef::Log.debug "-ia \`\"#{new_resource.args}\`\""        
-    output << " -ia \`\"#{new_resource.args}\`\""
-  end
-  return output
-end
-
-def cmd_build_without_version
-  output = ""  
-  if new_resource.source
-    output << " -source #{new_resource.source}"
-  end
-  if !new_resource.args.to_s.empty?
-    Chef::Log.debug "-ia \`\"#{new_resource.args}\`\""        
-    output << " -ia \`\"#{new_resource.args}\`\""
-  end
-  return output
-end
-
-
-action :install do  
- if @current_resource.exists
-    Chef::Log.info "#{ @new_resource } already installed - nothing to do."
-  else
-    converge_by("install package #{ @new_resource }") do       
-       Chef::Log.debug "running chocolatey with '.\\chocolatey.ps1' install  #{new_resource.package}  #{cmd_build} -verbose" 
-       
-       directory CHOCOLATEY_FAILED_PATH do
-        action :create
-      end
-
-       powershell "install package #{ @new_resource }" do
-          cwd CHOCOLATEY_PATH          
-          code <<-EOH
-            $output = ""
-            try
-            {
-              [System.Threading.Thread]::CurrentThread.CurrentCulture = ''; 
-              [System.Threading.Thread]::CurrentThread.CurrentUICulture = '';
-              $psargs = "install  #{new_resource.package} #{cmd_build} -verbose"
-              Invoke-Expression ".\\chocolatey.ps1 $psargs"                   
-            }
-            catch [Exception]
-            {              
-              $now = Get-Date -Format "yyyyMMddhhmmss"
-              $from = \"#{CHOCOLATEY_LIB_PATH}\\#{new_resource.package}.#{new_resource.version}\"              
-              $to =  \"#{CHOCOLATEY_FAILED_PATH}\\$now.#{new_resource.package}.#{new_resource.version}\"              
-              if((Test-Path -Path $from))
-              {
-                 write-host "$from" "$to"
-                 move-item -force $from $to 
-              }
-              throw 
-            }
-            write-host $output
-          EOH
-        end       
-    end
-  end
-end
-
-action :upgrade do  
-  if @current_resource.exists
-     if hasNotSpecifiedVersion
-        upgradeTolatest(new_resource.package)
-     else
-        if package_exists?(new_resource.package, new_resource.version)
-          Chef::Log.info "package '#{new_resource.package}' is already on version '#{new_resource.version}'"
-        else
-          upgradeToVersion(new_resource.package, new_resource.version)
-        end 
-     end    
-  else
-    upgradeByInstallingPackageForTheFirstTime
-  end  
-end
-
-action :remove do  
-  if @current_resource.exists
-    converge_by("uninstall package #{ @new_resource }") do
-      Chef::Log.debug "'.\\chocolatey.ps1' uninstall  #{new_resource.package} #{cmd_build}"
-       powershell "uninstall package #{ @new_resource }" do
-          cwd CHOCOLATEY_PATH          
-          code <<-EOH
-            [System.Threading.Thread]::CurrentThread.CurrentCulture = ''; 
-            [System.Threading.Thread]::CurrentThread.CurrentUICulture = '';
-            $output = & '.\\chocolatey.ps1' uninstall  #{new_resource.package} #{cmd_build}
-            write-host $output
-          EOH
-        end  
-    end
-  else
-    Chef::Log.info "#{ @new_resource } not installed - nothing to do."
-  end
-end
-
 
 def load_current_resource
   @current_resource = Chef::Resource::Chocolatey.new(@new_resource.name)
   @current_resource.name(@new_resource.name)
   @current_resource.version(@new_resource.version)
   @current_resource.source(@new_resource.source)
-  @current_resource.source(@new_resource.args)  
-  if package_exists?(@current_resource.name, @current_resource.version)    
-    @current_resource.exists = true
+  @current_resource.args(@new_resource.args)
+  @current_resource.package(@new_resource.package)
+  @current_resource.exists = true if package_exists?(@current_resource.package, @current_resource.version)
+  @current_resource.installed = true if package_installed?(@current_resource.package)
+end
+
+action :install do
+  if @current_resource.exists
+    Chef::Log.info "#{ @current_resource.package } already installed - nothing to do."
+  else
+    install(@current_resource.package)
   end
 end
 
-def package_exists?(name, version)  
-    name = "#{name}".strip
-    version = "#{version}".strip
-    cmd = ::File.join(node['chocolatey']['bin_path'],"chocolatey.bat") + " version "
-    Chef::Log.info "Checking to see if this chocolatey package exists: '#{name}' '#{version}'"
-    Chef::Log.debug "#{cmd} #{name} -localonly"
-    
-    IO.popen("#{cmd} #{name} -localonly").each do |line|    
-      line = line.chomp
-      if(line.include?('name') || line.include?('----') || line.length == 0)
-        #ignore these lines
+action :upgrade do  
+  if upgradeable?(@current_resource.package)
+    upgrade(@current_resource.package)
+  else
+    Chef::Log.info("Package #{@current_resource} already to latest version")
+  end  
+end
+
+action :remove do  
+  if @current_resource.installed
+    converge_by("uninstall package #{ @current_resource.package }") do
+      execute "uninstall package #{@current_resource.package}" do
+        command "#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} uninstall  #{@new_resource.package} #{cmd_args}"
+      end
+    end
+  else
+    Chef::Log.info "#{ @new_resource } not installed - nothing to do."
+  end
+end
+
+def cmd_args
+  output = String.new
+  output += " -source #{@current_resource.source}" if @current_resource
+  output += " -ia '#{@current_resource.args}'" unless @current_resource.args.to_s.empty?
+  return output
+end
+
+def package_installed?(name)
+  cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} version #{name} -localonly #{cmd_args}")
+  cmd.run_command
+  if cmd.stdout.include?('no version')
+    return true
+  else
+    return false
+  end
+#  software = cmd.stdout.split("\r\n").inject({}) {|h,s| v,k = s.split(":"); h[String(v).strip]=String(k).strip; h}
+end
+
+def package_exists?(name, version)
+  if package_installed?(name)
+    if version
+      cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} version #{name} -localonly #{cmd_args}")
+      cmd.run_command
+      software = cmd.stdout.split("\r\n").inject({}) {|h,s| v,k = s.split; h[String(v).strip]=String(k).strip; h}
+      if software[name] == version
+        return true
       else
-        lines = line.split     
-        if(lines[0] == name && lines[1] == version) 
-          Chef::Log.info "Found local package '#{name}' '#{version}'"
-          return true
-        else
-          Chef::Log.debug "package: '#{lines[0]}' '#{lines[1]}'"
-        end          
+        return false
       end
-    end
-    return false
-end
-
-def hasNotSpecifiedVersion
-  return new_resource.version.nil? || new_resource.version == 0
-end
-
-def upgradePackage(name, version)
-    #Install the package because it's not installed already 
-    Chef::Log.info "#{ @new_resource } not installed - update will install"          
-    converge_by("update package #{ @new_resource } to #{version} version ") do
-      Chef::Log.debug "'.\\chocolatey.ps1' update  #{new_resource.package} -version #{version} #{cmd_build_without_version}"          
-      
-      directory CHOCOLATEY_FAILED_PATH do
-        action :create
-      end
-      powershell "update package #{ @new_resource }" do
-        cwd CHOCOLATEY_PATH          
-        code <<-EOH
-            $output = ""
-            try
-            {
-              [System.Threading.Thread]::CurrentThread.CurrentCulture = ''; 
-              [System.Threading.Thread]::CurrentThread.CurrentUICulture = '';
-              $output = & '.\\chocolatey.ps1' update  #{new_resource.package} -version #{version} #{cmd_build_without_version}             
-            }
-            catch [Exception]
-            {              
-              $now = Get-Date -Format "yyyyMMddhhmmss"
-              $from = \"#{CHOCOLATEY_LIB_PATH}\\#{new_resource.package}.#{new_resource.version}\"              
-              $to =  \"#{CHOCOLATEY_FAILED_PATH}\\$now.#{new_resource.package}.#{new_resource.version}\"              
-              if((Test-Path -Path $from))
-              {
-                 write-host "$from" "$to"
-                 move-item -force $from $to 
-              }
-              throw 
-            }
-            write-host $output
-          EOH
-      end  
-    end    
-end
-
-def upgradeByInstallingPackageForTheFirstTime
-  #Install the package because it's not installed already 
-    Chef::Log.info "#{ @new_resource } not installed - update will install"    
-    if hasNotSpecifiedVersion
-      version = "latest"  
     else
-      version = new_resource.version        
-    end   
-    converge_by("update by installing package #{ @new_resource } to #{version} version ") do
-      execute "update package" do
-        command ::File.join(node['chocolatey']['bin_path'],"chocolatey.bat") + " update " + new_resource.package + cmd_build
-      end
-    end    
-end
-
-def upgradeTolatest (name)
-    cmd = ::File.join(node['chocolatey']['bin_path'],"chocolatey.bat") + " version "
-    Chef::Log.info "Checking to see if this chocolatey package exists: '#{name}' '#{version}'"
-    IO.popen("#{cmd} #{name} -all").each do |line|    
-      line = line.chomp
-      upgrade = false      
-      
-      if(line.include?('A more recent version is available'))
-         upgrade = true
-      elsif(line.include?('found'))
-         lines = line.split(":")
-         foundVersion = "#{lines[1]}".strip
-      elsif(line.include?('latest'))
-         lines = line.split(":")
-         latestVersion = "#{lines[1]}".strip
-      elsif(line.include?('Latest version installed'))
-         upgrade = false
-      else 
-        #ignore the line.               
-      end    
-      if upgrade 
-        Chef::Log.info "upgrading '#{name}' from '#{foundVersion}' to '#{latestVersion}'"
-        upgradePackage(name, version)
-      else 
-        Chef::Log.info "package '#{name}' is already on latest version '#{latestVersion}'"
-      end 
+      return true
     end
+  else
     return false
+  end
 end
 
-def upgradeToVersion(name, version)
-    converge_by("update package #{name } to version #{version}") do
-      execute "update package" do
-        command ::File.join(node['chocolatey']['bin_path'],"chocolatey.bat") + " update " + " #{name} " +  " -version #{version} "  + cmd_build_without_version
-      end
+def upgradeable?(name)
+  if @current_resource.exists
+    return false
+  elsif package_installed?(name)
+    Chef::Log.debug("Checking to see if this chocolatey package exists: '#{name}' '#{version}'")
+    cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} version #{name} #{cmd_args}")
+    cmd.run_command
+    if cmd.stdout.include?('Latest version installed')
+      return false
+    else
+      return true
     end
+  else
+    Chef::Log.debug("Package isn't installed... we can upgrade it!")
+    return true
+  end
+end
+
+def install(name)
+  if @current_resource.version
+    install_version(name, @current_resource.version) 
+  else
+    upgrade(name)
+  end
+end
+
+def upgrade(name)
+  converge_by("update package #{name} to latest") do
+    execute "updating #{name} to latest" do
+      command "#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} update #{name} #{cmd_args}"
+    end
+  end
+end
+
+def install_version(name, version)
+  converge_by("install package #{name} to version #{version}") do
+    execute "install package #{name} to version #{version}" do
+      command "#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} install #{name} -version #{version} #{cmd_args}"
+    end
+  end
 end 
