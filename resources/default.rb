@@ -6,6 +6,8 @@ attribute :version, :kind_of => String
 attribute :args, :kind_of => String
 
 def initialize(*args)
-	super
-	@action = :install
+  super
+  @action = :install
 end
+
+attr_accessor :exists, :upgradeable
