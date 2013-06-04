@@ -29,27 +29,30 @@ def load_current_resource
   @current_resource.args(@new_resource.args)
   @current_resource.package(@new_resource.package)
   @current_resource.exists = true if package_exists?(@current_resource.package, @current_resource.version)
-  @current_resource.installed = true if package_installed?(@current_resource.package)
+  @current_resource.upgradeable = true if upgradeable?(@current_resource.package)
+#  @current_resource.installed = true if package_installed?(@current_resource.package)
 end
 
 action :install do
   if @current_resource.exists
     Chef::Log.info "#{ @current_resource.package } already installed - nothing to do."
+  elsif @current_resource.version
+    install_version(@current_resource.package, @current_resource.version)
   else
     install(@current_resource.package)
   end
 end
 
 action :upgrade do  
-  if upgradeable?(@current_resource.package)
+  if @current_resource.upgradeable
     upgrade(@current_resource.package)
   else
     Chef::Log.info("Package #{@current_resource} already to latest version")
-  end  
+  end
 end
 
 action :remove do  
-  if @current_resource.installed
+  if @current_resource.exists
     converge_by("uninstall package #{ @current_resource.package }") do
       execute "uninstall package #{@current_resource.package}" do
         command "#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} uninstall  #{@new_resource.package} #{cmd_args}"
@@ -71,9 +74,9 @@ def package_installed?(name)
   cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} version #{name} -localonly #{cmd_args}")
   cmd.run_command
   if cmd.stdout.include?('no version')
-    return true
-  else
     return false
+  else
+    return true
   end
 #  software = cmd.stdout.split("\r\n").inject({}) {|h,s| v,k = s.split(":"); h[String(v).strip]=String(k).strip; h}
 end
@@ -116,11 +119,11 @@ def upgradeable?(name)
 end
 
 def install(name)
-  if @current_resource.version
-    install_version(name, @current_resource.version) 
-  else
-    upgrade(name)
-  end
+   converge_by("install package #{name}") do
+     execute "install package #{name}" do
+       command "#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} install #{name} #{cmd_args}"
+     end
+   end
 end
 
 def upgrade(name)

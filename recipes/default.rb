@@ -30,10 +30,10 @@ powershell "install chocolatey" do
 end
 
 file "cygwin log" do
-  path "C:/cygwin/var/log/setup.log"
-  action :delete
+  path "C:/cygwin/var/log/setup.log"
+  action :delete
 end
 
-chocolatey "chocolatey"
+chocolatey "chocolatey" do
   action :upgrade if node["chocolatey"]["upgrade"]
 end

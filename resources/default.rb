@@ -10,4 +10,4 @@ def initialize(*args)
   @action = :install
 end
 
-attr_accessor :exists
+attr_accessor :exists, :upgradeable
