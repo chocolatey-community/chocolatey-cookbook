@@ -65,7 +65,7 @@ end
 
 def cmd_args
   output = String.new
-  output += " -source #{@current_resource.source}" if @current_resource
+  output += " -source #{@current_resource.source}" if @current_resource.source
   output += " -ia '#{@current_resource.args}'" unless @current_resource.args.to_s.empty?
   return output
 end
