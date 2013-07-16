@@ -1,6 +1,22 @@
 cookbooks
-nuget.exe 
+nuget.exe
 spec
 Cheffile
 build.cmd
 build.ps1
+
+.vagrant
+Berksfile.lock
+*~
+*#
+.#*
+\#*#
+.*.sw[a-z]
+*.un~
+/cookbooks
+
+# Bundler
+Gemfile.lock
+bin/*
+.bundle/*
+
