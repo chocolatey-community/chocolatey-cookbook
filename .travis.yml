@@ -1,0 +1,8 @@
+rvm:
+  - 1.9.3
+  - 2.0.0
+before_script:
+    - bundle exec berks install
+bundler_args: --without integration
+script:
+  - bundle exec strainer test --except kitchen

@@ -16,6 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+use_inline_resources
+
 # Support whyrun
 def whyrun_supported?
   true
@@ -43,7 +46,7 @@ action :install do
   end
 end
 
-action :upgrade do  
+action :upgrade do
   if @current_resource.upgradeable
     upgrade(@current_resource.package)
   else
@@ -51,11 +54,11 @@ action :upgrade do
   end
 end
 
-action :remove do  
+action :remove do
   if @current_resource.exists
     converge_by("uninstall package #{ @current_resource.package }") do
       execute "uninstall package #{@current_resource.package}" do
-        command "#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} uninstall  #{@new_resource.package} #{cmd_args}"
+        command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} uninstall  #{@new_resource.package} #{cmd_args}"
       end
     end
   else
@@ -64,14 +67,14 @@ action :remove do
 end
 
 def cmd_args
-  output = String.new
+  output = ''
   output += " -source #{@current_resource.source}" if @current_resource.source
   output += " -ia '#{@current_resource.args}'" unless @current_resource.args.to_s.empty?
-  return output
+  output
 end
 
 def package_installed?(name)
-  cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} version #{name} -localonly #{cmd_args}")
+  cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} version #{name} -localonly #{cmd_args}")
   cmd.run_command
   if cmd.stdout.include?('no version')
     return false
@@ -84,9 +87,13 @@ end
 def package_exists?(name, version)
   if package_installed?(name)
     if version
-      cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} version #{name} -localonly #{cmd_args}")
+      cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} version #{name} -localonly #{cmd_args}")
       cmd.run_command
-      software = cmd.stdout.split("\r\n").inject({}) {|h,s| v,k = s.split; h[String(v).strip]=String(k).strip; h}
+      software = cmd.stdout.split("\r\n").reduce({}) do |h, s|
+        v, k = s.split
+        h[String(v).strip] = String(k).strip
+        h
+      end
       if software[name] == version
         return true
       else
@@ -105,7 +112,7 @@ def upgradeable?(name)
     return false
   elsif package_installed?(name)
     Chef::Log.debug("Checking to see if this chocolatey package exists: '#{name}' '#{version}'")
-    cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} version #{name} #{cmd_args}")
+    cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} version #{name} #{cmd_args}")
     cmd.run_command
     if cmd.stdout.include?('Latest version installed')
       return false
@@ -119,25 +126,19 @@ def upgradeable?(name)
 end
 
 def install(name)
-   converge_by("install package #{name}") do
-     execute "install package #{name}" do
-       command "#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} install #{name} #{cmd_args}"
-     end
-   end
+  execute "install package #{name}" do
+    command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} install #{name} #{cmd_args}"
+  end
 end
 
 def upgrade(name)
-  converge_by("update package #{name} to latest") do
-    execute "updating #{name} to latest" do
-      command "#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} update #{name} #{cmd_args}"
-    end
+  execute "updating #{name} to latest" do
+    command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} update #{name} #{cmd_args}"
   end
 end
 
 def install_version(name, version)
-  converge_by("install package #{name} to version #{version}") do
-    execute "install package #{name} to version #{version}" do
-      command "#{::File.join(node['chocolatey']['bin_path'],"chocolatey.bat")} install #{name} -version #{version} #{cmd_args}"
-    end
+  execute "install package #{name} to version #{version}" do
+    command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} install #{name} -version #{version} #{cmd_args}"
   end
-end 
+end
