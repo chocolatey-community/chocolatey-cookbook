@@ -111,7 +111,7 @@ def upgradeable?(name)
   if @current_resource.exists
     return false
   elsif package_installed?(name)
-    Chef::Log.debug("Checking to see if this chocolatey package exists: '#{name}' '#{version}'")
+    Chef::Log.debug("Checking to see if this chocolatey package is installed/upgradable: '#{name}'")
     cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} version #{name} #{cmd_args}")
     cmd.run_command
     if cmd.stdout.include?('Latest version installed')
