@@ -57,8 +57,8 @@ end
 action :remove do
   if @current_resource.exists
     converge_by("uninstall package #{ @current_resource.package }") do
-      execute "uninstall package #{@current_resource.package}" do
-        command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} uninstall  #{@new_resource.package} #{cmd_args}"
+      batch "uninstall package #{@current_resource.package}" do
+        code "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} uninstall  #{@new_resource.package} #{cmd_args}"
       end
     end
   else
@@ -126,19 +126,19 @@ def upgradeable?(name)
 end
 
 def install(name)
-  execute "install package #{name}" do
-    command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} install #{name} #{cmd_args}"
+  batch "install package #{name}" do
+    code "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} install #{name} #{cmd_args}"
   end
 end
 
 def upgrade(name)
-  execute "updating #{name} to latest" do
-    command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} update #{name} #{cmd_args}"
+  batch "updating #{name} to latest" do
+    code "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} update #{name} #{cmd_args}"
   end
 end
 
 def install_version(name, version)
-  execute "install package #{name} to version #{version}" do
-    command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} install #{name} -version #{version} #{cmd_args}"
+  batch "install package #{name} to version #{version}" do
+    code "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} install #{name} -version #{version} #{cmd_args}"
   end
 end
