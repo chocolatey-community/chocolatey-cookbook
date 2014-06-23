@@ -6,5 +6,6 @@ description      'Install chocolatey and packages on Windows'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.1.1'
 
-depends 'powershell'
 supports 'windows'
+
+depends 'windows', '~> 1.31'

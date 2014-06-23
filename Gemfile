@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'chef', '~> 11'
-gem 'berkshelf'
+gem 'berkshelf', '~> 3.1'
 
 group :test do
   gem 'foodcritic', '~> 3.0.3'
