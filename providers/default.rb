@@ -33,7 +33,7 @@ def load_current_resource
   @current_resource.package(@new_resource.package)
   @current_resource.exists = true if package_exists?(@current_resource.package, @current_resource.version)
   @current_resource.upgradeable = true if upgradeable?(@current_resource.package)
-#  @current_resource.installed = true if package_installed?(@current_resource.package)
+  #  @current_resource.installed = true if package_installed?(@current_resource.package)
 end
 
 action :install do
@@ -58,7 +58,7 @@ action :remove do
   if @current_resource.exists
     converge_by("uninstall package #{ @current_resource.package }") do
       execute "uninstall package #{@current_resource.package}" do
-        command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} uninstall  #{@new_resource.package} #{cmd_args}"
+        command "#{node[:chocolatey][:bin]} uninstall  #{@new_resource.package} #{cmd_args}"
       end
     end
   else
@@ -74,22 +74,15 @@ def cmd_args
 end
 
 def package_installed?(name)
-  cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} version #{name} -localonly #{cmd_args}")
-  cmd.run_command
-  if cmd.stdout.include?('no version')
-    return false
-  else
-    return true
-  end
-#  software = cmd.stdout.split("\r\n").inject({}) {|h,s| v,k = s.split(":"); h[String(v).strip]=String(k).strip; h}
+  !Mixlib::ShellOut.new("#{node[:chocolatey][:bin]} version #{name} -localonly #{cmd_args}").run_command.error?
 end
 
 def package_exists?(name, version)
   if package_installed?(name)
     if version
-      cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} version #{name} -localonly #{cmd_args}")
+      cmd = Mixlib::ShellOut.new("#{node[:chocolatey][:bin]} version #{name} -localonly #{cmd_args}")
       cmd.run_command
-      software = cmd.stdout.split("\r\n").reduce({}) do |h, s|
+      software = cmd.stdout.split("\r\n").each_with_object({}) do |h, s|
         v, k = s.split
         h[String(v).strip] = String(k).strip
         h
@@ -112,7 +105,7 @@ def upgradeable?(name)
     return false
   elsif package_installed?(name)
     Chef::Log.debug("Checking to see if this chocolatey package is installed/upgradable: '#{name}'")
-    cmd = Mixlib::ShellOut.new("#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} version #{name} #{cmd_args}")
+    cmd = Mixlib::ShellOut.new("#{node[:chocolatey][:bin]} version #{name} #{cmd_args}")
     cmd.run_command
     if cmd.stdout.include?('Latest version installed')
       return false
@@ -127,18 +120,18 @@ end
 
 def install(name)
   execute "install package #{name}" do
-    command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} install #{name} #{cmd_args}"
+    command "#{node[:chocolatey][:bin]} install #{name} #{cmd_args}"
   end
 end
 
 def upgrade(name)
   execute "updating #{name} to latest" do
-    command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} update #{name} #{cmd_args}"
+    command "#{node[:chocolatey][:bin]} update #{name} #{cmd_args}"
   end
 end
 
 def install_version(name, version)
   execute "install package #{name} to version #{version}" do
-    command "#{::File.join(node['chocolatey']['bin_path'], "chocolatey.bat")} install #{name} -version #{version} #{cmd_args}"
+    command "#{node[:chocolatey][:bin]} install #{name} -version #{version} #{cmd_args}"
   end
 end
