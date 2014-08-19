@@ -1,13 +1,16 @@
 AllCops:
-  Includes:
+  Include:
     - Berksfile
     - Gemfile
     - Rakefile
     - Thorfile
     - Guardfile
-  Excludes:
+  Exclude:
     - vendor/**
 
+SingleSpaceBeforeFirstArg:
+  Exclude:
+    - metadata.rb
 ClassLength:
   Enabled: false
 Documentation:
