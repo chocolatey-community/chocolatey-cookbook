@@ -1,8 +1,7 @@
+language: ruby
+bundler_args: --without integration
 rvm:
   - 1.9.3
   - 2.0.0
-before_script:
-    - bundle exec berks install
-bundler_args: --without integration
-script:
-  - bundle exec strainer test --except kitchen
+  - 2.1.0
+script: bundle exec rake travis
