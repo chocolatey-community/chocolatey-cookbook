@@ -32,7 +32,6 @@ def load_current_resource
   @current_resource.args(@new_resource.args)
   @current_resource.package(@new_resource.package)
   @current_resource.choco_params(@new_resource.choco_params)
-  @current_resource.force(@new_resource.force)
   @current_resource.x86(@new_resource.x86)
   @current_resource.exists = true if package_exists?(@current_resource.package, @current_resource.version)
   @current_resource.upgradeable = true if upgradeable?(@current_resource.package)
@@ -74,7 +73,6 @@ def cmd_args
   output += " -source #{@current_resource.source}" if @current_resource.source
   output += " -ia '#{@current_resource.args}'" unless @current_resource.args.to_s.empty?
   output += " -params '#{@current_resource.choco_params}'" unless @current_resource.choco_params.to_s.empty?
-  output += " -force" if @current_resource.force
   output += " -x86" if @current_resource.x86
   output
 end
