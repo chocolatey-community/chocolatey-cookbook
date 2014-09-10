@@ -30,6 +30,7 @@ def load_current_resource
   @current_resource.version(@new_resource.version)
   @current_resource.source(@new_resource.source)
   @current_resource.args(@new_resource.args)
+  @current_resource.options(@new_resource.options)
   @current_resource.package(@new_resource.package)
   @current_resource.exists = true if package_exists?(@current_resource.package, @current_resource.version)
   @current_resource.upgradeable = true if upgradeable?(@current_resource.package)
@@ -70,6 +71,7 @@ def cmd_args
   output = ''
   output += " -source #{@current_resource.source}" if @current_resource.source
   output += " -ia '#{@current_resource.args}'" unless @current_resource.args.to_s.empty?
+  output += " #{@current_resource.options}" unless @current_resource.options.to_s.empty?
   output
 end
 

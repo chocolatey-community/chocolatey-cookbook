@@ -4,6 +4,7 @@ attribute :package, :kind_of => String, :name_attribute => true
 attribute :source, :kind_of => String
 attribute :version, :kind_of => String
 attribute :args, :kind_of => String
+attribute :options, :kind_of => String
 
 def initialize(*args)
   super
