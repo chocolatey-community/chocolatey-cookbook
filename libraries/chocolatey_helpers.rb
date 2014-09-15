@@ -9,7 +9,7 @@ module ChocolateyHelpers
   #
   # Reference: https://github.com/chocolatey/chocolatey-cookbook/pull/16#issuecomment-47975896
   def self.chocolatey_executable
-    ::File.join(chocolatey_install, 'bin', 'choco')
+    "\"#{::File.join(chocolatey_install, 'bin', 'choco')}\""
   end
 
   # Check if Chocolatey is installed
