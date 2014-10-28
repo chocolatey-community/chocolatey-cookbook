@@ -1,3 +1,6 @@
+# Support making Chocolatey better! [Kickstarter - The Chocolatey Experience](https://www.kickstarter.com/projects/ferventcoder/chocolatey-the-alternative-windows-store-like-yum)
+
+
 [![Cookbook Version](https://img.shields.io/cookbook/v/chocolatey.svg)](https://supermarket.getchef.com/cookbooks/chocolatey) [![Build Status](http://img.shields.io/travis/chocolatey/chocolatey-cookbook/master.svg)](https://travis-ci.org/chocolatey/chocolatey-cookbook)
 
 # Description
