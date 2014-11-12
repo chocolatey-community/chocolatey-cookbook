@@ -33,7 +33,6 @@ def load_current_resource
   @current_resource.options(@new_resource.options)
   @current_resource.package(@new_resource.package)
   @current_resource.exists = true if package_exists?(@current_resource.package, @current_resource.version)
-  @current_resource.upgradeable = true if upgradeable?(@current_resource.package)
   #  @current_resource.installed = true if package_installed?(@current_resource.package)
 end
 
@@ -48,7 +47,7 @@ action :install do
 end
 
 action :upgrade do
-  if @current_resource.upgradeable
+  if upgradeable?(@current_resource.package)
     upgrade(@current_resource.package)
   else
     Chef::Log.info("Package #{@current_resource} already to latest version")
