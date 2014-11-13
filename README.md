@@ -77,6 +77,6 @@ chocolatey 'PowerShell'
 
 # License and Maintainer
 
-Maintainer:: Guilhem Lettron (<guilhem.lettron@youscribe.com>)
+Maintainer:: Guilhem Lettron (<guilhem@lettron.fr>)
 
 License:: Apache 2.0
