@@ -32,8 +32,8 @@ def load_current_resource
   @current_resource.args(@new_resource.args)
   @current_resource.options(@new_resource.options)
   @current_resource.package(@new_resource.package)
-  @current_resource.exists = true if package_exists?(@current_resource.package, @current_resource.version)
-  #  @current_resource.installed = true if package_installed?(@current_resource.package)
+  @current_resource.exists = true if ::ChocolateyHelpers.package_exists?(@current_resource.package, @current_resource.version, cmd_args)
+  @current_resource
 end
 
 action :install do
@@ -47,7 +47,7 @@ action :install do
 end
 
 action :upgrade do
-  if upgradeable?(@current_resource.package)
+  if ::ChocolateyHelpers.upgradeable?(@current_resource.package)
     upgrade(@current_resource.package)
   else
     Chef::Log.info("Package #{@current_resource} already to latest version")
@@ -56,9 +56,10 @@ end
 
 action :remove do
   if @current_resource.exists
-    converge_by("uninstall package #{ @current_resource.package }") do
-      execute "uninstall package #{@current_resource.package}" do
-        command "#{::ChocolateyHelpers.chocolatey_executable} uninstall  #{@new_resource.package} #{cmd_args}"
+    package = @current_resource.package
+    converge_by("uninstall package #{package}") do
+      execute "uninstall package #{package}" do
+        command "#{::ChocolateyHelpers.chocolatey_executable} uninstall #{package} #{cmd_args}"
       end
     end
   else
@@ -75,41 +76,6 @@ def cmd_args
     output += " #{v}" if v
   end
   output
-end
-
-def package_installed?(name)
-  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} version #{name} -localonly #{cmd_args}")
-  cmd.run_command
-
-  cmd.exitstatus == 0
-end
-
-def package_exists?(name, version)
-  return false unless package_installed?(name)
-  return true unless version
-
-  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} version #{name} -localonly #{cmd_args}")
-  cmd.run_command
-  software = cmd.stdout.split("\r\n").each_with_object({}) do |s, h|
-    v, k = s.split
-    h[String(v).strip] = String(k).strip
-    h
-  end
-
-  software[name] == version
-end
-
-def upgradeable?(name)
-  return false unless @current_resource.exists
-  unless package_installed?(name)
-    Chef::Log.debug("Package isn't installed... we can upgrade it!")
-    return true
-  end
-
-  Chef::Log.debug("Checking to see if this chocolatey package is installed/upgradable: '#{name}'")
-  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} version #{name} #{cmd_args}")
-  cmd.run_command
-  !cmd.stdout.include?('Latest version installed')
 end
 
 def install(name)

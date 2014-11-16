@@ -1,5 +1,7 @@
 #!/usr/bin/env rake
 
+require 'rspec/core/rake_task'
+
 # Style tests. Rubocop and Foodcritic
 namespace :style do
   begin
@@ -31,6 +33,12 @@ task style: ['style:chef', 'style:ruby']
 namespace :maintain do
   require 'stove/rake_task'
   Stove::RakeTask.new
+end
+
+namespace :test do
+  RSpec::Core::RakeTask.new(:unit) do |t|
+    t.pattern = 'spec/**/*_spec.rb'
+  end
 end
 
 desc 'Run all tests on Travis'
