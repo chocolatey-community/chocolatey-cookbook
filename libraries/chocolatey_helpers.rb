@@ -21,4 +21,39 @@ module ChocolateyHelpers
     cmd.run_command
     @is_chocolatey_installed = (cmd.exitstatus == 0)
   end
+
+  def self.package_installed?(name, cmd_args)
+    cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} version #{name} -localonly #{cmd_args}")
+    cmd.run_command
+
+    cmd.exitstatus == 0
+  end
+
+  def self.package_exists?(name, version, cmd_args)
+    return false unless ::ChocolateyHelpers.package_installed?(name, cmd_args)
+    return true unless version
+
+    cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} version #{name} -localonly #{cmd_args}")
+    cmd.run_command
+    software = cmd.stdout.split("\r\n").each_with_object({}) do |s, h|
+      v, k = s.split
+      h[String(v).strip] = String(k).strip
+      h
+    end
+
+    software[name] == version
+  end
+
+  def self.upgradeable?(name)
+    return false unless @current_resource.exists
+    unless ::ChocolateyHelpers.package_installed?(name, cmd_args)
+      Chef::Log.debug("Package isn't installed... we can upgrade it!")
+      return true
+    end
+
+    Chef::Log.debug("Checking to see if this chocolatey package is installed/upgradable: '#{name}'")
+    cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} version #{name} #{cmd_args}")
+    cmd.run_command
+    !cmd.stdout.include?('Latest version installed')
+  end
 end
