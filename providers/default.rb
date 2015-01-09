@@ -92,11 +92,11 @@ def package_exists?(name, version)
   cmd.run_command
   software = cmd.stdout.split("\r\n").each_with_object({}) do |s, h|
     v, k = s.split
-    h[String(v).strip] = String(k).strip
+    h[String(v).strip.downcase] = String(k).strip
     h
   end
 
-  software[name] == version
+  software[name.downcase] == version
 end
 
 def upgradeable?(name)
