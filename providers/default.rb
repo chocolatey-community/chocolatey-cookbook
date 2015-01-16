@@ -56,11 +56,7 @@ end
 
 action :remove do
   if @current_resource.exists
-    converge_by("uninstall package #{ @current_resource.package }") do
-      execute "uninstall package #{@current_resource.package}" do
-        command "#{::ChocolateyHelpers.chocolatey_executable} uninstall  #{@new_resource.package} #{cmd_args}"
-      end
-    end
+    uninstall(@current_resource.package)
   else
     Chef::Log.info "#{ @new_resource } not installed - nothing to do."
   end
@@ -127,5 +123,11 @@ end
 def install_version(name, version)
   execute "install package #{name} version #{version}" do
     command "#{::ChocolateyHelpers.chocolatey_executable} install #{name} -version #{version} #{cmd_args}"
+  end
+end
+
+def uninstall(name)
+  execute "uninstall package #{name}" do
+    command "#{::ChocolateyHelpers.chocolatey_executable} uninstall #{name} #{cmd_args}"
   end
 end
