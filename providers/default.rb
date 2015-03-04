@@ -58,7 +58,7 @@ action :remove do
   if @current_resource.exists
     converge_by("uninstall package #{ @current_resource.package }") do
       execute "uninstall package #{@current_resource.package}" do
-        command "#{::ChocolateyHelpers.chocolatey_executable} uninstall  #{@new_resource.package} #{cmd_args}"
+        command "#{::ChocolateyHelpers.chocolatey_executable} uninstall -y #{@new_resource.package} #{cmd_args}"
       end
     end
   else
@@ -78,17 +78,11 @@ def cmd_args
 end
 
 def package_installed?(name)
-  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} version #{name} -localonly #{cmd_args}")
-  cmd.run_command
-
-  cmd.exitstatus == 0
+  package_exists?(name, nil)
 end
 
 def package_exists?(name, version)
-  return false unless package_installed?(name)
-  return true unless version
-
-  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} version #{name} -localonly #{cmd_args}")
+  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} search #{name} --local-only #{cmd_args}")
   cmd.run_command
   software = cmd.stdout.split("\r\n").each_with_object({}) do |s, h|
     v, k = s.split
@@ -96,7 +90,11 @@ def package_exists?(name, version)
     h
   end
 
-  software[name.downcase] == version.downcase
+  if version
+    software[name.downcase] == version.downcase
+  else
+    !software[name.downcase].nil?
+  end
 end
 
 def upgradeable?(name)
@@ -107,25 +105,25 @@ def upgradeable?(name)
   end
 
   Chef::Log.debug("Checking to see if this chocolatey package is installed/upgradable: '#{name}'")
-  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} version #{name} #{cmd_args}")
+  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} upgrade #{name} --whatif #{cmd_args}")
   cmd.run_command
-  !cmd.stdout.include?('Latest version installed')
+  !cmd.stdout.include?('Chocolatey can upgrade 1/1')
 end
 
 def install(name)
   execute "install package #{name}" do
-    command "#{::ChocolateyHelpers.chocolatey_executable} install #{name} #{cmd_args}"
+    command "#{::ChocolateyHelpers.chocolatey_executable} install -y #{name} #{cmd_args}"
   end
 end
 
 def upgrade(name)
   execute "updating #{name} to latest" do
-    command "#{::ChocolateyHelpers.chocolatey_executable} update #{name} #{cmd_args}"
+    command "#{::ChocolateyHelpers.chocolatey_executable} upgrade -y #{name} #{cmd_args}"
   end
 end
 
 def install_version(name, version)
   execute "install package #{name} version #{version}" do
-    command "#{::ChocolateyHelpers.chocolatey_executable} install #{name} -version #{version} #{cmd_args}"
+    command "#{::ChocolateyHelpers.chocolatey_executable} install -y #{name} -version #{version} #{cmd_args}"
   end
 end
