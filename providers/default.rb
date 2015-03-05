@@ -105,9 +105,9 @@ def upgradeable?(name)
   end
 
   Chef::Log.debug("Checking to see if this chocolatey package is installed/upgradable: '#{name}'")
-  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} upgrade #{name} --whatif #{cmd_args}")
+  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} upgrade #{name} -r --whatif #{cmd_args}")
   cmd.run_command
-  !cmd.stdout.include?('Chocolatey can upgrade 1/1')
+  !cmd.stdout.chomp.empty?
 end
 
 def install(name)
