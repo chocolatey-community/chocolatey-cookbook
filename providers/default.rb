@@ -82,7 +82,7 @@ def package_installed?(name)
 end
 
 def package_exists?(name, version)
-  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} search #{name} --local-only #{cmd_args}")
+  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} search #{name} -l #{cmd_args}")
   cmd.run_command
   software = cmd.stdout.split("\r\n").each_with_object({}) do |s, h|
     v, k = s.split
@@ -105,7 +105,7 @@ def upgradeable?(name)
   end
 
   Chef::Log.debug("Checking to see if this chocolatey package is installed/upgradable: '#{name}'")
-  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} upgrade #{name} -r --whatif #{cmd_args}")
+  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} upgrade #{name} -r --noop #{cmd_args}")
   cmd.run_command
   !cmd.stdout.chomp.empty?
 end
