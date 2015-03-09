@@ -47,8 +47,9 @@ action :install do
 end
 
 action :upgrade do
-  if upgradeable?(@current_resource.package)
-    upgrade(@current_resource.package)
+  package_name = @current_resource.package
+  if upgradeable?(package_name)
+    upgrade(package_name)
   else
     Chef::Log.info("Package #{@current_resource} already to latest version")
   end
@@ -56,13 +57,14 @@ end
 
 action :remove do
   if @current_resource.exists
-    converge_by("uninstall package #{ @current_resource.package }") do
-      execute "uninstall package #{@current_resource.package}" do
-        command "#{::ChocolateyHelpers.chocolatey_executable} uninstall -y #{@new_resource.package}"
+    package_name = @current_resource.package
+    converge_by("uninstall package #{package_name}") do
+      execute "uninstall package #{package_name}" do
+        command "#{::ChocolateyHelpers.chocolatey_executable} uninstall -y #{package_name}"
       end
     end
   else
-    Chef::Log.info "#{ @new_resource } not installed - nothing to do."
+    Chef::Log.info "#{@current_resource} not installed - nothing to do."
   end
 end
 
