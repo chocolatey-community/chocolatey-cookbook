@@ -24,11 +24,10 @@ include_recipe 'windows'
 # ::Chef::Recipe.send(:include, Chef::Mixin::PowershellOut)
 ::Chef::Resource::RubyBlock.send(:include, Chef::Mixin::PowershellOut)
 
-unless ChocolateyHelpers.chocolatey_installed?
-  powershell_script 'install chocolatey' do
-    code "iex ((new-object net.webclient).DownloadString('#{node['chocolatey']['Uri']}'))"
-    convert_boolean_return true
-  end
+powershell_script 'install chocolatey' do
+  code "iex ((new-object net.webclient).DownloadString('#{node['chocolatey']['Uri']}'))"
+  convert_boolean_return true
+  not_if { ChocolateyHelpers.chocolatey_installed? }
 end
 
 ruby_block "reset ENV['ChocolateyInstall']" do
