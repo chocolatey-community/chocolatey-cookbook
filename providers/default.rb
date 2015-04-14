@@ -110,7 +110,6 @@ def upgradeable?(name)
   cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} upgrade -r --noop #{cmd_args} #{name}")
   cmd.run_command
   result = cmd.stdout.chomp
-  return false if result.empty? # for chocolatey 0.9.9 + 0.9.9.1
   package_name, current_version, updated_version, is_pinned = result.split('|')
   raise "Wrong package name #{name} != #{package_name}" if package_name != name
   current_version != updated_version && is_pinned != 'true'
