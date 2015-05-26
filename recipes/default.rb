@@ -36,7 +36,7 @@ batch 'install chocolatey' do
   architecture arch
   interpreter cmd
   code <<-EOH
-    powershell -noprofile -inputformat none -noninteractive -executionpolicy bypass -command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))"
+    powershell -noprofile -inputformat none -noninteractive -executionpolicy bypass -command "iex ((new-object net.webclient).DownloadString('#{node['chocolatey']['Uri']}'))"
   EOH
   not_if { ChocolateyHelpers.chocolatey_installed? }
 end
