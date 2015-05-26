@@ -38,7 +38,7 @@ batch 'install chocolatey' do
   code <<-EOH
     powershell -noprofile -inputformat none -noninteractive -executionpolicy bypass -command "iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))"
   EOH
-  not_if "test-path '#{chocolatey_path}\\choco.exe'"
+  not_if { ChocolateyHelpers.chocolatey_installed? }
 end
 
 ruby_block "reset ENV['ChocolateyInstall']" do
