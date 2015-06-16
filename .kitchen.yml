@@ -1,0 +1,17 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: win2012r2-standard
+  - name: win2008r2-standard
+
+suites:
+  - name: default
+    run_list:
+      - recipe[chocolatey::default]
+
+    attributes:

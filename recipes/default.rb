@@ -32,11 +32,13 @@ else
   cmd = 'cmd.exe'
 end
 
+chocolatey_install_script = "$wc = New-Object Net.WebClient; $wc.UseDefaultCredentials = $true; $wc.Proxy.Credentials = $wc.Credentials; $wc.DownloadString('#{node['chocolatey']['Uri']}')"
+
 batch 'install chocolatey' do
   architecture arch
   interpreter cmd
   code <<-EOH
-    powershell -noprofile -inputformat none -noninteractive -executionpolicy bypass -command "iex ((new-object net.webclient).DownloadString('#{node['chocolatey']['Uri']}'))"
+    powershell -noprofile -inputformat none -noninteractive -executionpolicy bypass -command "#{chocolatey_install_script} | Invoke-Expression"
   EOH
   not_if { ChocolateyHelpers.chocolatey_installed? }
 end
