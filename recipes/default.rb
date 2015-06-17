@@ -32,13 +32,24 @@ else
   cmd = 'cmd.exe'
 end
 
-chocolatey_install_script = "$wc = New-Object Net.WebClient; $wc.UseDefaultCredentials = $true; $wc.Proxy.Credentials = $wc.Credentials; $wc.DownloadString('#{node['chocolatey']['Uri']}')"
+# Add ability to download Chocolatey install script behind a proxy
+# This also works if you are not behind a proxy
+command = <<-EOS
+  $wc = New-Object Net.WebClient
+  $wp=[system.net.WebProxy]::GetDefaultProxy()
+  $wp.UseDefaultCredentials=$true
+  $wc.Proxy=$wp
+  Invoke-Expression ($wc.DownloadString('#{node['chocolatey']['Uri']}'))
+EOS
+
+encoded_script = command.encode('UTF-16LE', 'UTF-8')
+chocolatey_install_script = Base64.strict_encode64(encoded_script)
 
 batch 'install chocolatey' do
   architecture arch
   interpreter cmd
   code <<-EOH
-    powershell -noprofile -inputformat none -noninteractive -executionpolicy bypass -command "#{chocolatey_install_script} | Invoke-Expression"
+    powershell -noprofile -inputformat none -noninteractive -executionpolicy bypass -EncodedCommand #{chocolatey_install_script}
   EOH
   not_if { ChocolateyHelpers.chocolatey_installed? }
 end
