@@ -64,8 +64,8 @@ end
 
 ruby_block "update ENV['Path']" do
   block do
-    ENV['PATH'] += File::PATH_SEPARATOR if !ENV['PATH'].end_with?(File::PATH_SEPARATOR)
-    ENV['PATH'] += ::File.join(ChocolateyHelpers.chocolatey_install,'bin')
+    ENV['PATH'] += File::PATH_SEPARATOR unless ENV['PATH'].end_with?(File::PATH_SEPARATOR)
+    ENV['PATH'] += ::File.join(ChocolateyHelpers.chocolatey_install, 'bin')
   end
 end
 
