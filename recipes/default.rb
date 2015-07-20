@@ -62,6 +62,13 @@ ruby_block "reset ENV['ChocolateyInstall']" do
   end
 end
 
+ruby_block "update ENV['Path']" do
+  block do
+    ENV['PATH'] += File::PATH_SEPARATOR if !ENV['PATH'].end_with?(File::PATH_SEPARATOR)
+    ENV['PATH'] += ::File.join(ChocolateyHelpers.chocolatey_install,'bin')
+  end
+end
+
 # Issue #1: Cygwin "setup.log" size
 file 'cygwin log' do
   path 'C:/cygwin/var/log/setup.log'
