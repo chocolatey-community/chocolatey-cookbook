@@ -67,6 +67,11 @@ end
   end
 end
 
+chocolatey 'wireshark' do
+  version '1.12.6'
+  action :install
+end
+
 chocolatey 'DotNet4.5'
 
 chocolatey 'PowerShell'
