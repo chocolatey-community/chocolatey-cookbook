@@ -35,11 +35,11 @@ end
 # Add ability to download Chocolatey install script behind a proxy
 # This also works if you are not behind a proxy
 command = <<-EOS
-  $wc = New-Object Net.WebClient
-  $wp=[system.net.WebProxy]::GetDefaultProxy()
-  $wp.UseDefaultCredentials=$true
-  $wc.Proxy=$wp
-  Invoke-Expression ($wc.DownloadString('#{node['chocolatey']['Uri']}'))
+  $proxy=[system.net.WebProxy]::GetDefaultProxy()
+  $proxy.UseDefaultCredentials=$true
+  $client = New-Object Net.WebClient
+  $client.Proxy=$proxy
+  Invoke-Expression ($client.DownloadString('#{node['chocolatey']['Uri']}'))
 EOS
 
 encoded_script = command.encode('UTF-16LE', 'UTF-8')
