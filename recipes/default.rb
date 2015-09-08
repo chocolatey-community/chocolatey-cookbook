@@ -36,7 +36,7 @@ end
 # This also works if you are not behind a proxy
 command = <<-EOS
   if ($env:http_proxy -eq $null) {
-    $proxy=[system.net.WebProxy]::GetDefaultProxy()
+    $proxy=[system.net.WebRequest]::DefaultWebProxy()
     $proxy.UseDefaultCredentials=$true
   }
   else {
