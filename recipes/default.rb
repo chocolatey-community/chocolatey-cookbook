@@ -35,8 +35,14 @@ end
 # Add ability to download Chocolatey install script behind a proxy
 # This also works if you are not behind a proxy
 command = <<-EOS
-  $proxy=[system.net.WebProxy]::GetDefaultProxy()
-  $proxy.UseDefaultCredentials=$true
+  if ($env:http_proxy -eq $null) {
+    $proxy=[system.net.WebProxy]::GetDefaultProxy()
+    $proxy.UseDefaultCredentials=$true
+  }
+  else {
+    $proxy = New-Object -TypeName System.Net.WebProxy
+    $proxy.Address = $env:http_proxy
+  }
   $client = New-Object Net.WebClient
   $client.Proxy=$proxy
   Invoke-Expression ($client.DownloadString('#{node['chocolatey']['Uri']}'))
