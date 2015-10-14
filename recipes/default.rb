@@ -25,10 +25,8 @@ include_recipe 'windows'
 ::Chef::Resource::RubyBlock.send(:include, Chef::Mixin::PowershellOut)
 
 if File.exist?('C:\windows\sysnative\cmd.exe')
-  arch = :x86_64
   cmd = 'C:\windows\sysnative\cmd.exe'
 else
-  arch = nil
   cmd = 'cmd.exe'
 end
 
@@ -45,8 +43,8 @@ EOS
 encoded_script = command.encode('UTF-16LE', 'UTF-8')
 chocolatey_install_script = Base64.strict_encode64(encoded_script)
 
-batch 'install chocolatey' do
-  architecture arch
+script 'install chocolatey' do
+  flags '<'
   interpreter cmd
   code <<-EOH
     powershell -noprofile -inputformat none -noninteractive -executionpolicy bypass -EncodedCommand #{chocolatey_install_script}
