@@ -24,7 +24,7 @@ def whyrun_supported?
   true
 end
 
-def load_current_resource   # rubocop:disable Metrics/AbcSize
+def load_current_resource # rubocop:disable Metrics/AbcSize
   @current_resource = Chef::Resource::Chocolatey.new(@new_resource.name)
   @current_resource.name(@new_resource.name)
   @current_resource.version(@new_resource.version)
@@ -83,7 +83,7 @@ def package_installed?(name)
   package_exists?(name, nil)
 end
 
-def package_exists?(name, version)   # rubocop:disable Metrics/AbcSize
+def package_exists?(name, version) # rubocop:disable Metrics/AbcSize
   cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} list -l -r #{name}")
   cmd.run_command
   software = cmd.stdout.split("\r\n").each_with_object({}) do |s, h|
@@ -99,7 +99,7 @@ def package_exists?(name, version)   # rubocop:disable Metrics/AbcSize
   end
 end
 
-def upgradeable?(name)   # rubocop:disable Metrics/AbcSize
+def upgradeable?(name) # rubocop:disable Metrics/AbcSize
   return false unless @current_resource.exists
   unless package_installed?(name)
     Chef::Log.debug("Package isn't installed... we can upgrade it!")
