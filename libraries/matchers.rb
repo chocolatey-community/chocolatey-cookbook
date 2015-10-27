@@ -4,7 +4,7 @@
 #
 
 # These can be used when testing for chefspec.
-# Example: 
+# Example:
 #   Recipe:
 #     chocolatey 'cool_package'
 #   ChefSpec:
