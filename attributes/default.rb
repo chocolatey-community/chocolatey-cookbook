@@ -1,4 +1,2 @@
-if node['platform_family'] == 'windows'
-  default['chocolatey']['Uri']         = 'https://chocolatey.org/install.ps1'
-  default['chocolatey']['upgrade']     = true
-end
+default['chocolatey']['nupkg']['url'] = 'https://chocolatey.org/api/v2/package/chocolatey/'
+default['chocolatey']['upgrade'] = true

@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+include Chocolatey::Helpers
 
 use_inline_resources
 
@@ -60,7 +61,7 @@ action :remove do
     package_name = @current_resource.package
     converge_by("uninstall package #{package_name}") do
       execute "uninstall package #{package_name}" do
-        command "#{::ChocolateyHelpers.chocolatey_executable} uninstall -y #{package_name}"
+        command "#{chocolatey_executable} uninstall -y #{package_name}"
       end
     end
   else
@@ -84,7 +85,7 @@ def package_installed?(name)
 end
 
 def package_exists?(name, version) # rubocop:disable Metrics/AbcSize
-  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} list -l -r #{name}")
+  cmd = Mixlib::ShellOut.new("#{chocolatey_executable} list -l -r #{name}")
   cmd.run_command
   software = cmd.stdout.split("\r\n").each_with_object({}) do |s, h|
     v, k = s.split('|')
@@ -107,7 +108,7 @@ def upgradeable?(name) # rubocop:disable Metrics/AbcSize
   end
 
   Chef::Log.debug("Checking to see if this chocolatey package is installed/upgradable: '#{name}'")
-  cmd = Mixlib::ShellOut.new("#{::ChocolateyHelpers.chocolatey_executable} upgrade -r --noop #{cmd_args} #{name}")
+  cmd = Mixlib::ShellOut.new("#{chocolatey_executable} upgrade -r --noop #{cmd_args} #{name}")
   cmd.run_command
   result = cmd.stdout.chomp
   package_name, current_version, updated_version, is_pinned = result.split('|')
@@ -117,18 +118,18 @@ end
 
 def install(name)
   execute "install package #{name}" do
-    command "#{::ChocolateyHelpers.chocolatey_executable} install -y #{cmd_args} #{name}"
+    command "#{chocolatey_executable} install -y #{cmd_args} #{name}"
   end
 end
 
 def upgrade(name)
   execute "updating #{name} to latest" do
-    command "#{::ChocolateyHelpers.chocolatey_executable} upgrade -y #{cmd_args} #{name}"
+    command "#{chocolatey_executable} upgrade -y #{cmd_args} #{name}"
   end
 end
 
 def install_version(name, version)
   execute "install package #{name} version #{version}" do
-    command "#{::ChocolateyHelpers.chocolatey_executable} install -y -version  #{version} #{cmd_args} #{name}"
+    command "#{chocolatey_executable} install -y -version  #{version} #{cmd_args} #{name}"
   end
 end

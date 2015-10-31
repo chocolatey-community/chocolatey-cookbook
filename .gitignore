@@ -20,3 +20,4 @@ bin/*
 
 .kitchen/
 .kitchen.local.yml
+spec/examples.txt

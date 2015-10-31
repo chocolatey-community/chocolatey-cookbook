@@ -17,45 +17,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+unless node['platform_family'] == 'windows'
+  return "Chocolatey install not supported on #{node['platform_family']}"
+end
 
-return 'platform not supported' if node['platform_family'] != 'windows'
-include_recipe 'windows'
+Chef::Resource::RubyBlock.send(:include, Chocolatey::Helpers)
 
-# ::Chef::Recipe.send(:include, Chef::Mixin::PowershellOut)
-::Chef::Resource::RubyBlock.send(:include, Chef::Mixin::PowershellOut)
+NUGET_PKG = 'chocolatey.nupkg'
+nuget_package_path = File.join(Chef::Config['file_cache_path'], NUGET_PKG)
+extract_dir = File.join(ENV['TEMP'], 'chocolatey')
 
-# Add ability to download Chocolatey install script behind a proxy
-# This also works if you are not behind a proxy
-command = <<-EOS
-  $wc = New-Object Net.WebClient
-  $wp=[system.net.WebProxy]::GetDefaultProxy()
-  $wp.UseDefaultCredentials=$true
-  $wc.Proxy=$wp
-  Invoke-Expression ($wc.DownloadString('#{node['chocolatey']['Uri']}'))
-EOS
+install_ps1 = File.join(extract_dir, 'tools', 'chocolateyInstall.ps1')
 
-ruby_block 'install chocolatey' do
+remote_file nuget_package_path do
+  source node['chocolatey']['nupkg']['url']
+  backup false
+  notifies :unzip, "windows_zipfile[#{extract_dir}]", :immediately
+  notifies :run, 'powershell_script[Install Chocolatey]', :immediately
+  notifies :run, 'ruby_block[Ensure chocolatey.nupkg is in chocolatey/lib/chocolatey/]', :immediately
+end
+
+windows_zipfile extract_dir do
+  action :nothing
+  source nuget_package_path
+  overwrite true
+end
+
+powershell_script 'Install Chocolatey' do
+  action :nothing
+  cwd File.join(extract_dir, 'tools')
+  code install_ps1
+end
+
+ruby_block 'Ensure chocolatey.nupkg is in chocolatey/lib/chocolatey/' do
+  action :nothing
   block do
-    powershell_out!(command)
+    require 'fileutils'
+    FileUtils.mv(nuget_package_path, chocolatey_lib_dir)
   end
-  not_if { ChocolateyHelpers.chocolatey_installed? }
-end
-
-ruby_block "reset ENV['ChocolateyInstall']" do
-  block do
-    cmd = powershell_out!("[System.Environment]::GetEnvironmentVariable('ChocolateyInstall', 'MACHINE')")
-    ENV['ChocolateyInstall'] = cmd.stdout.chomp
-    Chef::Log.info("ChocolateyInstall is '#{ENV['ChocolateyInstall']}'")
-  end
-end
-
-# Issue #1: Cygwin "setup.log" size
-file 'cygwin log' do
-  path 'C:/cygwin/var/log/setup.log'
-  action :delete
-end
-
-chocolatey 'chocolatey' do
-  action :upgrade
-  only_if { node['chocolatey']['upgrade'] }
 end
