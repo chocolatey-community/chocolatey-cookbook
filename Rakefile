@@ -1,4 +1,5 @@
 #!/usr/bin/env rake
+require 'rspec/core/rake_task'
 
 # Style tests. Rubocop and Foodcritic
 namespace :style do
@@ -34,10 +35,13 @@ namespace :maintain do
 end
 
 desc 'Run all tests on Travis'
-task travis: ['style']
+task travis: ['spec', 'style']
+
+desc 'Run ChefSpec examples'
+RSpec::Core::RakeTask.new(:spec)
 
 # Default
-task default: ['style']
+task default: ['spec', 'style']
 
 begin
   require 'kitchen/rake_tasks'
