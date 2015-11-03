@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rake', '~> 10.4'
-gem 'berkshelf', '~> 3.2'
+gem 'berkshelf', '~> 4.0'
 gem 'stove', '~> 3.2'
 gem 'varia_model', '0.4.0'
 
