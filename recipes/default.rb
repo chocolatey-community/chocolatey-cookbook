@@ -4,6 +4,7 @@
 # Author:: Guilhem Lettron <guilhem.lettron@youscribe.com>
 #
 # Copyright 2012, Societe Publica.
+# Copyright 2015, Doug Ireton
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +23,7 @@ unless node['platform_family'] == 'windows'
 end
 
 Chef::Resource::RubyBlock.send(:include, Chocolatey::Helpers)
+Chef::Resource::RemoteFile.send(:include, Chocolatey::Helpers)
 
 NUGET_PKG = 'chocolatey.nupkg'
 nuget_package_path = File.join(Chef::Config['file_cache_path'], NUGET_PKG)
@@ -35,6 +37,7 @@ remote_file nuget_package_path do
   notifies :unzip, "windows_zipfile[#{extract_dir}]", :immediately
   notifies :run, 'powershell_script[Install Chocolatey]', :immediately
   notifies :run, 'ruby_block[Ensure chocolatey.nupkg is in chocolatey/lib/chocolatey/]', :immediately
+  not_if { chocolatey_installed? && (node['chocolatey']['upgrade'] == false) }
 end
 
 windows_zipfile extract_dir do
@@ -53,6 +56,6 @@ ruby_block 'Ensure chocolatey.nupkg is in chocolatey/lib/chocolatey/' do
   action :nothing
   block do
     require 'fileutils'
-    FileUtils.mv(nuget_package_path, chocolatey_lib_dir)
+    FileUtils.cp(nuget_package_path, chocolatey_lib_dir)
   end
 end
