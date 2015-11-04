@@ -4,7 +4,7 @@ RSpec.describe 'chocolatey::default' do
       # use call original as per http://www.relishapp.com/rspec/rspec-mocks/v/3-3/docs/configuring-responses/calling-the-original-implementation#%60and-call-original%60-can-configure-a-default-response-that-can-be-overriden-for-specific-args
       allow(ENV).to receive(:[]).and_call_original
       allow(ENV).to receive(:[]).with('TEMP').and_return('c:/windows/temp')
-      allow(ENV).to receive(:[]).with('ChocolateyInstall').and_return('C:\ProgramData\chocolatey')
+      allow(ENV).to receive(:fetch).with('ChocolateyInstall').and_return('C:\ProgramData\chocolatey')
 
       ChefSpec::SoloRunner.new(
         platform: 'windows', version: '2012R2'
