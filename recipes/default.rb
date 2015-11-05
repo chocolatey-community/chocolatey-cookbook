@@ -43,7 +43,7 @@ end
 
 ruby_block "reset ENV['ChocolateyInstall']" do
   block do
-    cmd = powershell_out!("[System.Environment]::GetEnvironmentVariable('ChocolateyInstall', 'MACHINE')")
+    cmd = powershell_out!("[System.Environment]::GetEnvironmentVariable('ChocolateyInstall')")
     ENV['ChocolateyInstall'] = cmd.stdout.chomp
     Chef::Log.info("ChocolateyInstall is '#{ENV['ChocolateyInstall']}'")
   end
