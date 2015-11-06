@@ -26,7 +26,7 @@ More information can be gotten from the [Chocolateywiki](https://github.com/choc
 
 # Attributes
 
-* `node['chocolatey']['nupkg']['url']` - Defaults to `'https://chocolatey.org/api/v2/package/chocolatey/'`
+* `node['chocolatey']['url']` - Defaults to `'https://chocolatey.org/install.ps1'`
 * `node['chocolatey']['upgrade']` -  Defaults to `true`.
 
 # Recipes

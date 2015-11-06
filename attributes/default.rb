@@ -1,2 +1,2 @@
-default['chocolatey']['nupkg']['url'] = 'https://chocolatey.org/api/v2/package/chocolatey/'
+default['chocolatey']['url'] = 'https://chocolatey.org/install.ps1'
 default['chocolatey']['upgrade'] = true

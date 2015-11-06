@@ -1,13 +1,10 @@
 # Changelog for Chocolatey cookbook
 
-### Unreleased
+### v0.5.0 (2015-11-06)
 
-* Refactored install script (and .kitchen.yml) to support installing Chocolatey
-in test-kitchen behind a proxy.
-* Remove `node['chocolatey']['Uri']` attribute. Instead, install by downloading
-the chocolatey.nupkg directly via Chef's `remote_file` resource. This lets users
-install via Chef client.rb proxy settings instead of inheriting Internet Explorer
-proxy settings.
+* Refactored install script (and .kitchen.yml) to support installing Chocolatey in test-kitchen behind a proxy.
+* Download `node['chocolatey']['Uri']` via `remote_file` resource instead of .net web client
+* Set `chocolateyProxyLocation` environment variable to `Chef::Config['https_proxy']` if one is set before chocolatey install
 * Changed helpers module namespacing from: `ChocolateyHelpers` to `Chocolatey::Helpers`
 * Add ChefSpec unit tests
 * Add ServerSpec integration tests
