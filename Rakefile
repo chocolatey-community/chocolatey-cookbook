@@ -30,7 +30,7 @@ desc 'Run ChefSpec examples'
 RSpec::Core::RakeTask.new(:spec)
 
 desc 'Run style and unit tests'
-task default: [:style, :spec]
+task default: [:spec, :style]
 
 begin
   require 'kitchen/rake_tasks'
