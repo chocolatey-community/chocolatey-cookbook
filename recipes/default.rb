@@ -29,20 +29,13 @@ install_ps1 = File.join(Chef::Config['file_cache_path'], 'install.ps1')
 remote_file install_ps1 do
   source node['chocolatey']['url']
   backup false
-  notifies :run, 'ruby_block[set proxy]', :immediately
   notifies :run, 'powershell_script[Install Chocolatey]', :immediately
   not_if { chocolatey_installed? && (node['chocolatey']['upgrade'] == false) }
 end
 
-ruby_block 'set proxy' do
-  action :nothing
-  block do
-    ENV['chocolateyProxyLocation'] = Chef::Config['https_proxy'] if Chef::Config['https_proxy']
-  end
-end
-
 powershell_script 'Install Chocolatey' do
   action :nothing
+  environment node['chocolatey']['install_vars']
   cwd Chef::Config['file_cache_path']
   code install_ps1
 end

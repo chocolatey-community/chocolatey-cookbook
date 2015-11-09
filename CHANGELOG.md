@@ -1,6 +1,6 @@
 # Changelog for Chocolatey cookbook
 
-### v0.5.0 (2015-11-06)
+### v0.5.0 (2015-11-09)
 
 * Refactored install script (and .kitchen.yml) to support installing Chocolatey in test-kitchen behind a proxy.
 * Download `node['chocolatey']['Uri']` via `remote_file` resource instead of .net web client
