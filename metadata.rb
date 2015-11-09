@@ -3,9 +3,12 @@ maintainer       'Guilhem Lettron'
 maintainer_email 'guilhem.lettron@youscribe.com'
 license          'Apache 2.0'
 description      'Install chocolatey and packages on Windows'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '0.4.1'
+long_description 'Installs the Chocolatey package manager for Windows and provides a Chef resource for installing nuget packages from https://chocolatey.org/'
+version          '1.0.0'
+
+source_url 'https://github.com/chocolatey/chocolatey-cookbook'
+issues_url 'https://github.com/chocolatey/chocolatey-cookbook/issues'
 
 supports 'windows'
 
-depends 'windows', '~> 1.31'
+depends 'windows', '~> 1.38'

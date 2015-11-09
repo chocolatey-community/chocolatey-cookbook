@@ -16,10 +16,7 @@ namespace :style do
 
     desc 'Run Chef style checks'
     FoodCritic::Rake::LintTask.new(:chef) do |t|
-      t.options = {
-        fail_tags: ['any'],
-        chef_version: '11.14.0'
-      }
+      t.options = { fail_tags: ['any'] }
     end
   rescue LoadError
     puts '>>>>> foodcritic gem not loaded, omitting tasks' unless ENV['CI']
@@ -29,23 +26,20 @@ end
 desc 'Run all style checks'
 task style: ['style:chef', 'style:ruby']
 
-namespace :maintain do
-  require 'stove/rake_task'
-  Stove::RakeTask.new
-end
-
-desc 'Run all tests on Travis'
-task travis: ['spec', 'style']
-
 desc 'Run ChefSpec examples'
 RSpec::Core::RakeTask.new(:spec)
 
-# Default
-task default: ['spec', 'style']
+desc 'Run style and unit tests'
+task default: [:spec, :style]
 
 begin
   require 'kitchen/rake_tasks'
   Kitchen::RakeTasks.new
 rescue LoadError
   puts '>>>>> Kitchen gem not loaded, omitting tasks' unless ENV['CI']
+end
+
+namespace :maintain do
+  require 'stove/rake_task'
+  Stove::RakeTask.new
 end
