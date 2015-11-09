@@ -1,22 +1,6 @@
-<% proxy_vars = {} %>
-<% %w(http_proxy https_proxy no_proxy).each do |envvar| %>
-<%   if ENV.key?(envvar) %>
-<%     proxy_vars[envvar] = ENV[envvar] %>
-<%   end %>
-<% end %>
 ---
 driver:
   name: vagrant
-
-<% if proxy_vars.size > 0 %>
-driver_config:
-<% %w(http_proxy https_proxy no_proxy).each do |envvar| %>
-<% if ENV.key?(envvar) %>
-  <%= envvar %>: '<%= ENV[envvar] %>'
-<% end %>
-<% end %>
-
-<% end %>
 
 provisioner:
   name: chef_solo
