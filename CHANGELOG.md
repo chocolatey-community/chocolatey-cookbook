@@ -3,6 +3,7 @@
 ### v0.5.1 (2015-11-10)
 
 * Prepend library include with :: in provder to fix 12.3.0 and likely other versions older than 12.5.1.
+* Add backward compatibiliy to new metadata.rb attributes `source_url` and `issues_url`.
 
 ### v0.5.0 (2015-11-09)
 
