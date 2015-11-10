@@ -16,7 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include Chocolatey::Helpers
+
+# Prepending with '::' to prevent breaks in older versions of chef
+include ::Chocolatey::Helpers
 
 use_inline_resources
 
