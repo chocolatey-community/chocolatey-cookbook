@@ -58,9 +58,10 @@ Attribute | Description | Type   | Default
 ### Resource Properties
 
 - package: package to manage (default name)
-- source:
+- source: The source to find the package(s) to install
 - version: The version of the package to use.
 - args: arguments to the installation.
+- options: Hash of additional options to be sent to `choco.exe`
 
 # Examples
 
@@ -80,6 +81,11 @@ end
 chocolatey 'wireshark' do
   version '1.12.6'
   action :install
+end
+
+chocolatey "some_private_secure_package" do
+  source "https://some.proget/feed"
+  options ({'u' => 'username', 'p' => 'password'})
 end
 
 chocolatey 'DotNet4.5'
