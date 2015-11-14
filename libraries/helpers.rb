@@ -47,6 +47,5 @@ module Chocolatey
       combined = local.concat(user).concat(machine).uniq.compact
       combined.join(';')
     end
-
   end
 end
