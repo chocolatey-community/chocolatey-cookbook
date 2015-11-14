@@ -29,7 +29,7 @@ module Chocolatey
     private
 
     def machine_env_var(env_var)
-        env_var(env_var, 'MACHINE')
+      env_var(env_var, 'MACHINE')
     end
 
     def env_var(env_var, scope)
@@ -41,13 +41,12 @@ module Chocolatey
 
     # combine the local path with the user and machine paths
     def env_path(local_path)
-        machine  = env_var('PATH', 'MACHINE').split(';')
-        user     = env_var('PATH', 'USER').split(';')
-        local    = local_path.split(';')
-        combined = local.concat(user).concat(machine).uniq().compact()
-        return combined.join(';')
+      machine  = env_var('PATH', 'MACHINE').split(';')
+      user     = env_var('PATH', 'USER').split(';')
+      local    = local_path.split(';')
+      combined = local.concat(user).concat(machine).uniq.compact
+      combined.join(';')
     end
-
 
   end
 end

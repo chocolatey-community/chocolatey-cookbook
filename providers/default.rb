@@ -50,15 +50,13 @@ action :install do
   else
     install(@current_resource.package)
   end
-  if @current_resource.track_path
-      adjust_path(@current_resource.package)
-  end
+  @current_resource.track_path && adjust_path(@current_resource.package)
 end
 
 def adjust_path(name)
- ruby_block  "adj-path-#{name}" do
-   block { ENV['PATH'] = env_path(ENV['PATH']) }
- end
+  ruby_block "track-path-#{name}" do
+    block { ENV['PATH'] = env_path(ENV['PATH']) }
+  end
 end
 
 action :upgrade do
