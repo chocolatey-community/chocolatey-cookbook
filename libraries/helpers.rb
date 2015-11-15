@@ -44,7 +44,7 @@ module Chocolatey
       machine  = env_var('PATH', 'MACHINE').split(';')
       user     = env_var('PATH', 'USER').split(';')
       local    = local_path.split(';')
-      combined = local.concat(user).concat(machine).uniq.compact
+      combined = local.concat(machine).concat(user).uniq.compact
       combined.join(';')
     end
   end
