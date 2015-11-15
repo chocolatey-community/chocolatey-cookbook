@@ -62,7 +62,6 @@ Attribute | Description | Type   | Default
 - version: The version of the package to use.
 - args: arguments to the installation.
 - options: Hash of additional options to be sent to `choco.exe`
-- track_path: Track changes to the %PATH% made by the package (default true)
 
 # Examples
 
@@ -81,7 +80,6 @@ end
 
 chocolatey 'git.install' do
     options ({ 'params' => "'/GitOnlyOnPath'" })
-    track_path true
 end
 
 chocolatey 'wireshark' do

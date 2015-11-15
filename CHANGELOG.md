@@ -3,8 +3,7 @@
 ### v0.5.2 (2015-11-14)
 
 * Path Tracking. Tracking additions to the user and machine
-  %PATH% environment and merging them into the current process. To get the old
-  behaviour add a `track_path false` attribute to the chocolatey resource
+  %PATH% environment and merging them into the current process. 
 
 ### v0.5.1 (2015-11-10)
 

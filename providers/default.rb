@@ -35,7 +35,6 @@ def load_current_resource # rubocop:disable Metrics/AbcSize
   @current_resource.args(@new_resource.args)
   @current_resource.options(@new_resource.options)
   @current_resource.package(@new_resource.package)
-  @current_resource.track_path(@new_resource.track_path)
   @current_resource.exists = package_exists?(@current_resource.package, @current_resource.version)
   #  @current_resource.installed = true if package_installed?(@current_resource.package)
 end
@@ -50,7 +49,7 @@ action :install do
   else
     install(@current_resource.package)
   end
-  @current_resource.track_path && adjust_path(@current_resource.package)
+  adjust_path(@current_resource.package)
 end
 
 def adjust_path(name)
