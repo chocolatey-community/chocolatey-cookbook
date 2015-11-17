@@ -113,7 +113,7 @@ def upgradeable?(name) # rubocop:disable Metrics/AbcSize
   cmd = Mixlib::ShellOut.new("#{chocolatey_executable} upgrade -r --noop #{cmd_args} #{name}")
   cmd.run_command
   result = cmd.stdout.chomp
-  package_name, current_version, updated_version, is_pinned = result.split('|')
+  package_name, current_version, updated_version, is_pinned = result.downcase.split('|')
   raise "Wrong package name #{name} != #{package_name}" if package_name != name
   current_version != updated_version && is_pinned != 'true'
 end
