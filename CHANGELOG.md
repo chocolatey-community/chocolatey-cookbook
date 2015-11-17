@@ -1,6 +1,6 @@
 # Changelog for Chocolatey cookbook
 
-### v0.6.0 (unreleased)
+### v0.6.0 (2015-11-17)
 
 * Path Tracking. Tracking additions to the user and machine
   %PATH% environment and merging them into the current process.
