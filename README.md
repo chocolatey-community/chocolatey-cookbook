@@ -78,6 +78,10 @@ end
   end
 end
 
+chocolatey 'git.install' do
+    options ({ 'params' => "'/GitOnlyOnPath'" })
+end
+
 chocolatey 'wireshark' do
   version '1.12.6'
   action :install

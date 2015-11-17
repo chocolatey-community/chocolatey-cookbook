@@ -13,5 +13,6 @@ suites:
   - name: default
     run_list:
       - recipe[chocolatey::default]
+      - recipe[chocolatey_test::default]
 
     attributes:

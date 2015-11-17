@@ -42,10 +42,19 @@ end
 action :install do
   if @current_resource.exists
     Chef::Log.info "#{@current_resource.package} already installed - nothing to do."
-  elsif @current_resource.version
+    return
+  end
+  if @current_resource.version
     install_version(@current_resource.package, @current_resource.version)
   else
     install(@current_resource.package)
+  end
+  adjust_path(@current_resource.package)
+end
+
+def adjust_path(name)
+  ruby_block "track-path-#{name}" do
+    block { ENV['PATH'] = env_path(ENV['PATH']) }
   end
 end
 
