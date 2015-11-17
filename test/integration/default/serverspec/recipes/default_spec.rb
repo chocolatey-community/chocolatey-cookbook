@@ -13,6 +13,14 @@ RSpec.describe command("#{choco_exe} list -l chocolatey") do
   its(:stdout) { should match(/1 packages installed\./) }
 end
 
+RSpec.describe command("#{choco_exe} list -l git.install") do
+  its(:stdout) { should match(/1 packages installed\./) }
+end
+
 RSpec.describe file(chocolatey_nupkg) do
+  it { should exist }
+end
+
+RSpec.describe file(File.join(ENV['TEMP'], 'chocolatey-cookbook', 'metadata.rb')) do
   it { should exist }
 end
