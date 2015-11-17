@@ -3,7 +3,8 @@
 ### v0.6.0 (unreleased)
 
 * Path Tracking. Tracking additions to the user and machine
-  %PATH% environment and merging them into the current process. 
+  %PATH% environment and merging them into the current process.
+* Downcase package name results from choco upgrade.
 
 ### v0.5.1 (2015-11-10)
 
