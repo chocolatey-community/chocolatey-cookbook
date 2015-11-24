@@ -1,5 +1,9 @@
 # Changelog for Chocolatey cookbook
 
+### v0.6.1 (2015-11-24)
+
+* Fix LocalJumpError on existing chocolatey package
+
 ### v0.6.0 (2015-11-17)
 
 * Path Tracking. Tracking additions to the user and machine
