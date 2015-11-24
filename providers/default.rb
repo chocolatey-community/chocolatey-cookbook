@@ -42,14 +42,14 @@ end
 action :install do
   if @current_resource.exists
     Chef::Log.info "#{@current_resource.package} already installed - nothing to do."
-    return
-  end
-  if @current_resource.version
-    install_version(@current_resource.package, @current_resource.version)
   else
-    install(@current_resource.package)
+    if @current_resource.version
+      install_version(@current_resource.package, @current_resource.version)
+    else
+      install(@current_resource.package)
+    end
+    adjust_path(@current_resource.package)
   end
-  adjust_path(@current_resource.package)
 end
 
 def adjust_path(name)
