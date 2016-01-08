@@ -1,5 +1,9 @@
 # Changelog for Chocolatey cookbook
 
+### v0.6.2 (2016-01-07)
+
+* Fix Chocolatey detection on chef clients older than 12.4.0
+
 ### v0.6.1 (2015-11-24)
 
 * Fix LocalJumpError on existing chocolatey package

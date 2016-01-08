@@ -1,5 +1,9 @@
 module Chocolatey
   module Helpers
+    # include the PowershellOut module from the windows cookbook
+    # in case we are running an older chef client
+    include Chef::Mixin::PowershellOut
+
     # Get the ChocolateyInstall directory from the environment.
     def chocolatey_install
       ENV.fetch('ChocolateyInstall') { |env_var| machine_env_var(env_var) }
