@@ -31,8 +31,8 @@ def load_current_resource # rubocop:disable Metrics/AbcSize
   @current_resource = Chef::Resource::Chocolatey.new(@new_resource.name)
   @current_resource.name(@new_resource.name)
   @current_resource.version(@new_resource.version)
-  @current_resource.source(@new_resource.source)
-  @current_resource.args(@new_resource.args)
+  @current_resource.source(@new_resource.source) unless @new_resource.source.nil?
+  @current_resource.args(@new_resource.args) unless @new_resource.args.nil?
   @current_resource.options(@new_resource.options)
   @current_resource.package(@new_resource.package)
   @current_resource.exists = package_exists?(@current_resource.package, @current_resource.version)
