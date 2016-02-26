@@ -1,5 +1,5 @@
 chocolatey 'git.install' do
-  options('params' =>  "'/GitOnlyOnPath'")
+  options('params' => "'/GitOnlyOnPath'")
 end
 
 git File.join(ENV['TEMP'], 'chocolatey-cookbook') do
