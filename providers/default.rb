@@ -105,7 +105,7 @@ def package_exists?(name, version) # rubocop:disable Metrics/AbcSize
   end
 
   if version
-    software[name.downcase] == version.downcase
+    software[name.downcase].casecmp(version.downcase)
   else
     !software[name.downcase].nil?
   end

@@ -8,7 +8,7 @@ AllCops:
   Exclude:
     - vendor/**
 
-SingleSpaceBeforeFirstArg:
+SpaceBeforeFirstArg:
   Exclude:
     - metadata.rb
 ClassLength:
@@ -25,7 +25,7 @@ MethodLength:
   Enabled: false
 SignalException:
   Enabled: false
-TrailingComma:
+TrailingCommaInLiteral:
   Enabled: false
 WordArray:
   Enabled: false
