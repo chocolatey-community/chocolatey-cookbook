@@ -27,7 +27,7 @@ Chef::Resource.send(:include, Chocolatey::Helpers)
 install_ps1 = File.join(Chef::Config['file_cache_path'], 'install.ps1')
 
 remote_file install_ps1 do
-  source node['chocolatey']['url']
+  source node['chocolatey']['url'] if node['chocolatey']['url']
   backup false
   notifies :run, 'powershell_script[Install Chocolatey]', :immediately
   only_if { node['chocolatey']['url'] }
