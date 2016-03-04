@@ -30,13 +30,12 @@ All attributes below are pre-pended with `node['chocolatey']`
 
 Attribute | Description | Type   | Default
 ----------|-------------|--------|--------
-`['url']` | Chocolatey installation script URL | String | https://chocolatey.org/install.ps1
 `['upgrade']` | Whether to upgrade Chocolatey if it's already installed | Boolean | true
 `['install_vars']['chocolateyProxyLocation']` | HTTPS proxy for Chocolatey install script | String | Chef::Config['https_proxy'] or ENV['https_proxy']
 `['install_vars']['chocolateyProxyUser']` | Proxy user for authenticating proxies | String | nil
 `['install_vars']['chocolateyProxyPassword']` | Proxy user password | String | nil
 `['install_vars']['chocolateyVersion']` | Version of Chocolatey to install, e.g. '0.9.9.11' | String | nil (download latest version)
-`['install_vars']['chocolateyDownloadUrl']` | Chocolatey .nupkg file URL. Use this if you host an internal copy of the chocolatey.nupkg | String | nil (download from chocolatey.org)
+`['install_vars']['chocolateyDownloadUrl']` | Chocolatey .nupkg file URL. Use this if you host an internal copy of the chocolatey.nupkg | String | https://chocolatey.org/api/v2/package/chocolatey (download from chocolatey.org)
 
 
 # Recipes

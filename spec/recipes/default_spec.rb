@@ -23,19 +23,27 @@ RSpec.describe 'chocolatey::default' do
       )
     end
 
-    let(:downloaded_package) { windows_node.remote_file(install_ps1) }
+    let(:install_template) { windows_node.template(install_ps1) }
     let(:powershell_script) { windows_node.powershell_script('Install Chocolatey') }
     let(:ruby_block) { windows_node.ruby_block('set proxy') }
 
-    it 'Downloads the chocolatey install.ps1 to the file_cache_path' do
-      expect(windows_node).to create_remote_file(install_ps1).with(
+    it 'Creates the chocolatey install_ps1 to the file_cache_path' do
+      expect(windows_node).to create_template(install_ps1).with(
+        backup: false
+      )
+    end
+
+    let(:download_package) { windows_node.remote_file(install_ps1) }
+
+    it 'doesnt download install.ps1 if using default url' do
+      expect(windows_node).to_not create_remote_file(install_ps1).with(
         source: 'https://chocolatey.org/install.ps1',
         backup: false
       )
     end
 
-    it 'remote_file notifies powershell_script to run the Chocolatey install script' do
-      expect(downloaded_package).to notify('powershell_script[Install Chocolatey]').to(:run).immediately
+    it 'install.ps1 template notifies powershell_script to run the Chocolatey install script' do
+      expect(install_template).to notify('powershell_script[Install Chocolatey]').to(:run).immediately
     end
 
     it 'powershell_script does not install Chocolatey unless a new install.ps1 has been downloaded' do

@@ -1,4 +1,3 @@
-default['chocolatey']['url'] = 'https://chocolatey.org/install.ps1'
 default['chocolatey']['upgrade'] = true
 
 # Chocolatey install.ps1 env vars. See https://chocolatey.org/install.ps1
@@ -7,6 +6,6 @@ default['chocolatey']['install_vars'].tap do |env|
   env['chocolateyProxyUser'] = nil
   env['chocolateyProxyPassword'] = nil
   env['chocolateyVersion'] = nil
-  env['chocolateyDownloadUrl'] = nil
+  env['chocolateyDownloadUrl'] = 'https://chocolatey.org/api/v2/package/chocolatey'
   env['chocolateyUseWindowsCompression'] = nil
 end
