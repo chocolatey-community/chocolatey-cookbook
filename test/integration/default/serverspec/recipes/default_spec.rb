@@ -10,7 +10,7 @@ RSpec.describe command(choco_exe) do
 end
 
 RSpec.describe command("#{choco_exe} list -l chocolatey") do
-  its(:stdout) { should match(/1 packages installed\./) }
+  its(:stdout) { should match(/[1-9] packages installed\./) }
 end
 
 RSpec.describe command("#{choco_exe} list -l git.install") do
