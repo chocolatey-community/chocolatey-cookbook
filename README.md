@@ -13,7 +13,7 @@ Install Chocolatey with the default recipe and manage packages with a handy reso
 
 ## Cookbooks:
 
-* windows (~> 1.31)
+* windows (~> 1.38)
 
 # Notes
 
@@ -47,6 +47,7 @@ Attribute | Description | Type   | Default
 * [chocolatey](#chocolatey)
 
 ## chocolatey
+**Note:** On chef client versions 12.7.0 and greater, Use the `chocolatey_package` resource instead.
 
 ### Actions
 

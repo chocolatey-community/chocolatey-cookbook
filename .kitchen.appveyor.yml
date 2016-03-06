@@ -1,6 +1,6 @@
 ---
 driver:
-  name: vagrant
+  name: machine
 
 provisioner:
   name: chef_zero
@@ -8,7 +8,8 @@ provisioner:
 platforms:
 - name: windows-2012R2
   driver_config:
-    box: mwrock/Windows2012R2
+    username: <%= ENV["winrm_user"] %>
+    password: <%= ENV["winrm_pass"] %>
 
 suites:
   - name: default

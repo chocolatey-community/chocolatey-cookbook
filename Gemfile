@@ -11,8 +11,9 @@ group :test do
 end
 
 group :integration do
+  gem 'kitchen-machine'
   gem 'kitchen-vagrant', '~> 0.19'
   gem 'serverspec', '~> 2.24'
-  gem 'test-kitchen', '~> 1.4'
-  gem 'winrm-transport', '~> 1.0'
+  gem 'test-kitchen', '~> 1.6'
+  gem 'winrm-fs', '~> 0.3'
 end

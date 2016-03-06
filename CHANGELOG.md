@@ -1,5 +1,10 @@
 # Changelog for Chocolatey cookbook
 
+### v1.0.0 (2016-03-07)
+
+* No longer dependent on chocolatey.org for install script
+* Removed deprecated overwriting of the current_resource and fixed visibility problem with `env_path`
+
 ### v0.6.2 (2016-01-07)
 
 * Fix Chocolatey detection on chef clients older than 12.4.0

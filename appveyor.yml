@@ -1,0 +1,37 @@
+version: "master-{build}"
+
+os: Windows Server 2012 R2
+platform:
+  - x64
+
+environment:
+  winrm_user: test_user
+  winrm_pass: Pass@word1
+  KITCHEN_YAML: c:\projects\chocolatey-cookbook\.kitchen.appveyor.yml
+  SSL_CERT_FILE: c:\projects\chocolatey-cookbook\certs.pem
+
+  matrix:
+    - ruby_version: "21"
+
+clone_folder: c:\projects\chocolatey-cookbook
+clone_depth: 1
+branches:
+  only:
+    - master
+
+install:
+  - ps: net user /add $env:winrm_user $env:winrm_pass
+  - ps: net localgroup administrators $env:winrm_user /add
+  - ps: $env:PATH="C:\Ruby$env:ruby_version\bin;$env:PATH"
+  - ps: Write-Host $env:PATH
+  - ps: ruby --version
+  - ps: gem --version
+  - ps: gem install bundler --quiet --no-ri --no-rdoc
+  - ps: Invoke-WebRequest -Uri http://curl.haxx.se/ca/cacert.pem -OutFile c:\projects\chocolatey-cookbook\certs.pem
+  - ps: bundler --version
+
+build_script:
+  - bundle install || bundle install || bundle install
+
+test_script:
+  - bundle exec kitchen verify
