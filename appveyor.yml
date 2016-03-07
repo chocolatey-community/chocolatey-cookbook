@@ -7,6 +7,7 @@ platform:
 environment:
   winrm_user: test_user
   winrm_pass: Pass@word1
+  winrm_port: 5985
   KITCHEN_YAML: c:\projects\chocolatey-cookbook\.kitchen.appveyor.yml
   SSL_CERT_FILE: c:\projects\chocolatey-cookbook\certs.pem
 
