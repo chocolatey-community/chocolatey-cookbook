@@ -1,20 +1,20 @@
 ---
 driver:
-  name: machine
+  name: proxy
+  host: localhost
+  reset_command: "exit 0"
+  username: <%= ENV["winrm_user"] %>
+  password: <%= ENV["winrm_pass"] %>
+  port: <%= ENV["winrm_port"] %>
 
 provisioner:
   name: chef_zero
 
 platforms:
 - name: windows-2012R2
-  driver_config:
-    username: <%= ENV["winrm_user"] %>
-    password: <%= ENV["winrm_pass"] %>
 
 suites:
   - name: default
     run_list:
       - recipe[chocolatey::default]
       - recipe[chocolatey_test::default]
-
-    attributes:
