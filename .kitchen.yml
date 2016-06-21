@@ -10,6 +10,9 @@ platforms:
   driver_config:
     box: mwrock/Windows2012R2
 
+verifier:
+  name: inspec
+
 suites:
   - name: default
     run_list:
