@@ -5,6 +5,10 @@ driver:
 provisioner:
   name: chef_zero
 
+transport:
+  name: winrm
+  elevated: true
+
 platforms:
 - name: windows-2012R2
   driver_config:
@@ -12,6 +16,7 @@ platforms:
 
 verifier:
   name: inspec
+
 
 suites:
   - name: default

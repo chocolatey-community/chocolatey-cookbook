@@ -12,7 +12,10 @@ end
 
 group :integration do
   gem 'kitchen-vagrant', '~> 0.19'
-  gem 'kitchen-inspec', '~> 0.14'
-  gem 'test-kitchen', '~> 1.6'
-  gem 'winrm-fs', '~> 0.4'
+  gem 'kitchen-inspec', :github => "mwrock/kitchen-inspec", :branch => "winrm-v2"
+  gem "test-kitchen", :github => "test-kitchen", :branch => "winrm-v2"
+  gem "train", :github => "chef/train", :branch => "winrm-v2"
+  gem "winrm", :github => "winrb/winrm", :branch => "winrm-v2"
+  gem "winrm-fs", :github => "winrb/winrm-fs", :branch => "winrm-v2"
+  gem "winrm-elevated", :github => "winrb/winrm-elevated", :branch => "winrm-v2"
 end
