@@ -31,13 +31,11 @@ template install_ps1 do
   backup false
   source 'InstallChocolatey.ps1.erb'
   variables :download_url => node['chocolatey']['install_vars']['chocolateyDownloadUrl']
-  notifies :run, 'powershell_script[Install Chocolatey]', :immediately
-  not_if { chocolatey_installed? && (node['chocolatey']['upgrade'] == false) }
 end
 
 powershell_script 'Install Chocolatey' do
-  action :nothing
   environment node['chocolatey']['install_vars']
   cwd Chef::Config['file_cache_path']
   code install_ps1
+  not_if { chocolatey_installed? && (node['chocolatey']['upgrade'] == false) }
 end
