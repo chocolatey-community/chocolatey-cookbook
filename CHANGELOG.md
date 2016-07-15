@@ -1,5 +1,9 @@
 # Changelog for Chocolatey cookbook
 
+### v1.0.1 (2016-07-15)
+
+* Always execute chocolatey installer unless guard is satisfied to allow the install to retry on subsequent attempts if it fails.
+
 ### v1.0.0 (2016-03-07)
 
 * No longer dependent on chocolatey.org for install script
