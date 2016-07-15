@@ -42,14 +42,6 @@ RSpec.describe 'chocolatey::default' do
       )
     end
 
-    it 'install.ps1 template notifies powershell_script to run the Chocolatey install script' do
-      expect(install_template).to notify('powershell_script[Install Chocolatey]').to(:run).immediately
-    end
-
-    it 'powershell_script does not install Chocolatey unless a new install.ps1 has been downloaded' do
-      expect(powershell_script).to do_nothing
-    end
-
     it 'powershell_script does not set chocolateyProxyLocation' do
       expect(powershell_script.environment['chocolateyProxyLocation']).to eq(proxy)
     end
