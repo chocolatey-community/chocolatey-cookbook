@@ -1,4 +1,5 @@
 default['chocolatey']['upgrade'] = true
+default['chocolatey']['allow_empty_checksums'] = true
 
 # Chocolatey install.ps1 env vars. See https://chocolatey.org/install.ps1
 default['chocolatey']['install_vars'].tap do |env|

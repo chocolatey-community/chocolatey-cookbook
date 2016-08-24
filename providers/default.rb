@@ -84,6 +84,7 @@ def cmd_args
   output = ''
   output += " -source #{@current_resource.source}" if @current_resource.source
   output += " -ia '#{@current_resource.args}'" unless @current_resource.args.to_s.empty?
+  output += ' --allow-empty-checksums' if node['chocolatey']['allow_empty_checksums']
   @current_resource.options.each do |k, v|
     output += " -#{k}"
     output += " #{v}" if v
