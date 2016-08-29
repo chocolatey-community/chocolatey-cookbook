@@ -18,3 +18,7 @@ suites:
     run_list:
       - recipe[chocolatey::default]
       - recipe[chocolatey_test::default]
+    attributes:
+      chocolatey:
+        install_vars:
+          chocolateyVersion: 0.9.10.3
