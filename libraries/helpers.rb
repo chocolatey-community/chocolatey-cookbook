@@ -27,7 +27,7 @@ module Chocolatey
       # choco /? returns an exit status of -1 with chocolatey 0.9.9 => use list
       cmd = Mixlib::ShellOut.new("#{chocolatey_executable} list -l chocolatey")
       cmd.run_command
-      @is_chocolatey_installed = (cmd.exitstatus == 0)
+      @is_chocolatey_installed = cmd.exitstatus.zero?
     end
 
     # combine the local path with the user and machine paths
