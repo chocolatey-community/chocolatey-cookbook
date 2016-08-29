@@ -15,6 +15,10 @@ describe command("#{choco_exe} list -l git.install") do
   its(:stdout) { should match(/1 packages installed\./) }
 end
 
+describe command("#{choco_exe} --version") do
+  its(:stdout) { should eq("0.9.10.3\r\n") }
+end
+
 describe file(chocolatey_nupkg) do
   it { should exist }
 end

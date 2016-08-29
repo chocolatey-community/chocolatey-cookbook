@@ -24,17 +24,19 @@
 # To use built-in compression (no 7zip download), please set $env:chocolateyUseWindowsCompression = 'true'
 
 $url = "<%= @download_url %>/"
-
-$chocolateyVersion = $env:chocolateyVersion
-if (![string]::IsNullOrEmpty($chocolateyVersion)){
-  Write-Output "Downloading specific version of Chocolatey: $chocolateyVersion"
-  $url = "<%= @download_url.chomp('/') -%>.$chocolateyVersion.nupkg"
-}
-
 $chocolateyDownloadUrl = $env:chocolateyDownloadUrl
 if (![string]::IsNullOrEmpty($chocolateyDownloadUrl)){
   Write-Output "Downloading Chocolatey from : $chocolateyDownloadUrl"
   $url = "$chocolateyDownloadUrl"
+}
+
+$chocolateyVersion = "<%= @chocolatey_version %>"
+if([string]::IsNullOrEmpty($chocolateyVersion)) {
+  $chocolateyVersion = $env:chocolateyVersion
+}
+if (![string]::IsNullOrEmpty($chocolateyVersion)){
+  Write-Output "Downloading specific version of Chocolatey: $chocolateyVersion"
+  $url = "<%= @download_url.chomp('/') -%>/$chocolateyVersion"
 }
 
 if ($env:TEMP -eq $null) {
