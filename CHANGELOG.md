@@ -1,5 +1,9 @@
 # Changelog for Chocolatey cookbook
 
+### v1.0.2 (2016-08-29)
+
+* Ensure `chocolateyVersion` attribute is used and the correct version of chocolatey is installed.
+
 ### v1.0.1 (2016-07-15)
 
 * Always execute chocolatey installer unless guard is satisfied to allow the install to retry on subsequent attempts if it fails.
