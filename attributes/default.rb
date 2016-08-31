@@ -9,3 +9,5 @@ default['chocolatey']['install_vars'].tap do |env|
   env['chocolateyDownloadUrl'] = 'https://chocolatey.org/api/v2/package/chocolatey'
   env['chocolateyUseWindowsCompression'] = nil
 end
+
+default['chocolatey']['repositories'] = {}

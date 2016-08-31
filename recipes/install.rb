@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: chocolatey
-# recipe:: default
+# recipe:: install
 # Author:: Guilhem Lettron <guilhem.lettron@youscribe.com>
 #
 # Copyright 2012, Societe Publica.
@@ -22,11 +22,26 @@ unless node['platform_family'] == 'windows'
   return "Chocolatey install not supported on #{node['platform_family']}"
 end
 
-include_recipe 'chocolatey::install'
+Chef::Resource.send(:include, Chocolatey::Helpers)
 
-node['chocolatey']['repositories'].each do |name, source|
-  chocolatey_sources name do
-    action :add
-    source source
-  end
+install_ps1 = File.join(Chef::Config['file_cache_path'], 'install.ps1')
+
+template install_ps1 do
+  action :create
+  backup false
+  source 'InstallChocolatey.ps1.erb'
+  variables :download_url => node['chocolatey']['install_vars']['chocolateyDownloadUrl']
+end
+
+powershell_script 'Install Chocolatey' do
+  environment node['chocolatey']['install_vars']
+  cwd Chef::Config['file_cache_path']
+  code install_ps1
+  not_if { chocolatey_installed? && (node['chocolatey']['upgrade'] == false) }
+  notifies :run, 'ruby_block[add choco bins to PATH]', :immediately
+end
+
+ruby_block 'add choco bins to PATH' do
+  action :nothing
+  block { ENV['PATH'] += ";#{ENV['PROGRAMDATA']}\\chocolatey\\bin" }
 end
