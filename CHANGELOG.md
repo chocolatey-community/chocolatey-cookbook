@@ -1,5 +1,9 @@
 # Changelog for Chocolatey cookbook
 
+### v1.0.3 (2016-09-12)
+
+* Loosen windows-cookbook constraint
+
 ### v1.0.2 (2016-08-29)
 
 * Ensure `chocolateyVersion` attribute is used and the correct version of chocolatey is installed.
