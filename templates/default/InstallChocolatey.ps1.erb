@@ -47,6 +47,16 @@ $tempDir = Join-Path $chocTempDir "chocInstall"
 if (![System.IO.Directory]::Exists($tempDir)) {[System.IO.Directory]::CreateDirectory($tempDir)}
 $file = Join-Path $tempDir "chocolatey.zip"
 
+try {
+  # This should work in .NET 4 where .NET 4.5 is installed as an inplace upgrade
+  # Enable TLS1.2 (3072)
+  [System.Net.ServicePointManager]::SecurityProtocol |= 3072
+  # Enable TLS1.1 (768)
+  [System.Net.ServicePointManager]::SecurityProtocol |= 768
+} catch {
+  Write-Warning "Unable to set PowerShell to use TLS 1.2 and TLS 1.1 due to old .NET Framework installed. Please upgrade to at least .NET Framework 4.5 and PowerShell v3 for this to work appropriately."
+}
+
 function Download-File {
 param (
   [string]$url,
