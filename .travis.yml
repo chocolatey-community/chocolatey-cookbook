@@ -2,7 +2,7 @@ sudo: false
 language: ruby
 bundler_args: --without integration
 rvm:
-  - 2.2
+  - 2.2.6
 script: bundle exec rake
 
 branches:
