@@ -1,4 +1,5 @@
 default['chocolatey']['upgrade'] = true
+default['chocolatey']['install_ps1_url'] = 'https://chocolatey.org/install.ps1'
 
 # Chocolatey install.ps1 env vars. See https://chocolatey.org/install.ps1
 default['chocolatey']['install_vars'].tap do |env|

@@ -29,13 +29,14 @@ install_ps1 = File.join(Chef::Config['file_cache_path'], 'chocolatey-install.ps1
 remote_file install_ps1 do
   action :create
   backup false
-  source 'https://chocolatey.org/install.ps1'
+  ignore_failure true
+  source node['chocolatey']['install_ps1_url']
   not_if { chocolatey_installed? && (node['chocolatey']['upgrade'] == false) }
 end
 
 powershell_script 'Install Chocolatey' do
   environment node['chocolatey']['install_vars']
   cwd Chef::Config['file_cache_path']
-  command install_ps1
+  code install_ps1
   not_if { chocolatey_installed? && (node['chocolatey']['upgrade'] == false) }
 end
