@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'rake', '~> 10.4'
 gem 'berkshelf', '~> 4.0'
+gem 'rake', '~> 10.4'
 gem 'stove', '~> 3.2'
 
 group :test do
@@ -11,8 +11,8 @@ group :test do
 end
 
 group :integration do
-  gem 'kitchen-vagrant', '~> 0.19'
   gem 'kitchen-inspec', '~> 0.15'
+  gem 'kitchen-vagrant', '~> 0.19'
   gem 'test-kitchen', '~> 1.12'
   gem 'winrm-fs', '~> 1.0'
 end

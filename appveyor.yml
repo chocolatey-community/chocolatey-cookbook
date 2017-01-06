@@ -12,7 +12,7 @@ environment:
   SSL_CERT_FILE: c:\projects\chocolatey-cookbook\certs.pem
 
   matrix:
-    - ruby_version: "21"
+    - ruby_version: "22"
 
 clone_folder: c:\projects\chocolatey-cookbook
 clone_depth: 1
