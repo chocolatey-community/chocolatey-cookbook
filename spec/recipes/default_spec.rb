@@ -28,21 +28,12 @@ RSpec.describe 'chocolatey::default' do
     let(:ruby_block) { windows_node.ruby_block('set proxy') }
 
     it 'Creates the chocolatey install_ps1 to the file_cache_path' do
-      expect(windows_node).to create_remote_file(install_ps1).with(
-        backup: false,
-        ignore_failure: true
+      expect(windows_node).to create_cookbook_file(install_ps1).with(
+        backup: false
       )
     end
 
-    let(:download_package) { windows_node.remote_file(install_ps1) }
-
-    it 'downloads install.ps1 even if using default url' do
-      expect(windows_node).to create_remote_file(install_ps1).with(
-        source: 'https://chocolatey.org/install.ps1',
-        backup: false,
-        ignore_failure: true
-      )
-    end
+    let(:download_package) { windows_node.cookbook_file(install_ps1) }
 
     it 'powershell_script does not set chocolateyProxyLocation' do
       expect(powershell_script.environment['chocolateyProxyLocation']).to eq(proxy)

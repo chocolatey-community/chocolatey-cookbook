@@ -31,7 +31,6 @@ All attributes below are pre-pended with `node['chocolatey']`
 Attribute | Description | Type   | Default
 ----------|-------------|--------|--------
 `['upgrade']` | Whether to upgrade Chocolatey if it's already installed | Boolean | true
-`['install_ps1_url']` | Url to the `install.ps1` script. | String | https://chocolatey.org/install.ps1 (download from chocolatey.org)
 `['install_vars']['chocolateyProxyLocation']` | HTTPS proxy for Chocolatey install script | String | Chef::Config['https_proxy'] or ENV['https_proxy']
 `['install_vars']['chocolateyProxyUser']` | Proxy user for authenticating proxies | String | nil
 `['install_vars']['chocolateyProxyPassword']` | Proxy user password | String | nil
