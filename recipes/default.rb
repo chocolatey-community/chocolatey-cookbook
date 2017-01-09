@@ -24,13 +24,12 @@ end
 
 Chef::Resource.send(:include, Chocolatey::Helpers)
 
-install_ps1 = File.join(Chef::Config['file_cache_path'], 'install.ps1')
+install_ps1 = File.join(Chef::Config['file_cache_path'], 'chocolatey-install.ps1')
 
-template install_ps1 do
+cookbook_file install_ps1 do
   action :create
   backup false
-  source 'InstallChocolatey.ps1.erb'
-  variables :download_url => node['chocolatey']['install_vars']['chocolateyDownloadUrl']
+  source 'install.ps1'
 end
 
 powershell_script 'Install Chocolatey' do

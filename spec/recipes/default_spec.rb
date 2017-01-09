@@ -19,7 +19,7 @@ RSpec.describe 'chocolatey::default' do
 
     let(:install_ps1) do
       File.join(
-        Chef::Config['file_cache_path'], 'install.ps1'
+        Chef::Config['file_cache_path'], 'chocolatey-install.ps1'
       )
     end
 
@@ -28,19 +28,12 @@ RSpec.describe 'chocolatey::default' do
     let(:ruby_block) { windows_node.ruby_block('set proxy') }
 
     it 'Creates the chocolatey install_ps1 to the file_cache_path' do
-      expect(windows_node).to create_template(install_ps1).with(
+      expect(windows_node).to create_cookbook_file(install_ps1).with(
         backup: false
       )
     end
 
-    let(:download_package) { windows_node.remote_file(install_ps1) }
-
-    it 'doesnt download install.ps1 if using default url' do
-      expect(windows_node).to_not create_remote_file(install_ps1).with(
-        source: 'https://chocolatey.org/install.ps1',
-        backup: false
-      )
-    end
+    let(:download_package) { windows_node.cookbook_file(install_ps1) }
 
     it 'powershell_script does not set chocolateyProxyLocation' do
       expect(powershell_script.environment['chocolateyProxyLocation']).to eq(proxy)
@@ -48,7 +41,7 @@ RSpec.describe 'chocolatey::default' do
 
     it 'runs the install.ps1 script from the chef file cache directory' do
       expect(powershell_script.cwd).to eq('c:/chef/cache')
-      expect(powershell_script.code).to eq('c:/chef/cache/install.ps1')
+      expect(powershell_script.code).to eq('c:/chef/cache/chocolatey-install.ps1')
     end
 
     context 'proxy is configured in Chef::Config' do
