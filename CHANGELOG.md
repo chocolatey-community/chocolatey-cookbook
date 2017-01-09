@@ -1,5 +1,9 @@
 # Changelog for Chocolatey cookbook
 
+### v1.1.0 (2017-01-09)
+
+* Update the chocolatey install script to match chocolatey.org.
+
 ### v1.0.3 (2016-09-12)
 
 * Loosen windows-cookbook constraint
