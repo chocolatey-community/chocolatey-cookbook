@@ -1,23 +1,51 @@
-nuget.exe
-Cheffile
-build.cmd
-build.ps1
-
-.vagrant
-Berksfile.lock
+*.rbc
+.config
+coverage
+InstalledFiles
+lib/bundler/man
+pkg
+rdoc
+spec/reports
+test/tmp
+test/version_tmp
+tmp
+_Store
 *~
 *#
 .#*
 \#*#
 .*.sw[a-z]
 *.un~
-/cookbooks
+*.tmp
+*.bk
+*.bkup
 
-# Bundler
+# ruby/bundler files
+.ruby-version
+.ruby-gemset
+.rvmrc
 Gemfile.lock
-bin/*
-.bundle/*
+.bundle
+*.gem
 
-.kitchen/
+# YARD artifacts
+.yardoc
+_yardoc
+doc/
+.idea
+
+# chef stuff
+Berksfile.lock
+.kitchen
 .kitchen.local.yml
-spec/examples.txt
+vendor/
+.coverage/
+.zero-knife.rb
+Policyfile.lock.json
+Cheffile.lock
+.librarian/
+
+# vagrant stuff
+.vagrant/
+.vagrant.d/
+.kitchen/
