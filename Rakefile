@@ -1,5 +1,6 @@
 #!/usr/bin/env rake
 require 'rspec/core/rake_task'
+require 'cookstyle'
 
 # Style tests. Rubocop and Foodcritic
 namespace :style do
