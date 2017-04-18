@@ -3,9 +3,9 @@ driver:
   name: proxy
   host: localhost
   reset_command: "exit 0"
-  username: <%= ENV["winrm_user"] %>
-  password: <%= ENV["winrm_pass"] %>
-  port: <%= ENV["winrm_port"] %>
+  port: 5985
+  username: <%= ENV["machine_user"] %>
+  password: <%= ENV["machine_pass"] %>
 
 provisioner:
   name: chef_zero
