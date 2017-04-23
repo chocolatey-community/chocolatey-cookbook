@@ -16,7 +16,7 @@ describe command("#{choco_exe} list -l git.install") do
 end
 
 describe command("#{choco_exe} --version") do
-  its(:stdout) { should eq("0.9.10.3\r\n") }
+  its(:stdout) { should eq("0.10.5\r\n") }
 end
 
 describe file(chocolatey_nupkg) do
