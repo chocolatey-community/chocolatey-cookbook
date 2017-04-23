@@ -1,5 +1,9 @@
 # Changelog for Chocolatey cookbook
 
+### v1.1.1 (2017-04-22)
+
+* Fix chef 13 converges renaming conflicting `env_path` method
+
 ### v1.1.0 (2017-01-09)
 
 * Update the chocolatey install script to match chocolatey.org.
