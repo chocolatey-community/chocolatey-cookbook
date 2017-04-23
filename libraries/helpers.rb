@@ -31,7 +31,7 @@ module Chocolatey
     end
 
     # combine the local path with the user and machine paths
-    def env_path(local_path)
+    def environment_path(local_path)
       machine  = env_var('PATH', 'MACHINE').split(';')
       user     = env_var('PATH', 'USER').split(';')
       local    = local_path.split(';')

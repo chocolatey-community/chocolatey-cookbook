@@ -54,7 +54,7 @@ end
 
 def adjust_path(name)
   ruby_block "track-path-#{name}" do
-    block { ENV['PATH'] = env_path(ENV['PATH']) }
+    block { ENV['PATH'] = environment_path(ENV['PATH']) }
   end
 end
 
