@@ -1,5 +1,9 @@
 # Changelog for Chocolatey cookbook
 
+### v1.2.0 (2017-05-04)
+
+* Thange the default `['chocolatey']['upgrade']` attribute value to `false`
+
 ### v1.1.1 (2017-04-22)
 
 * Fix chef 13 converges renaming conflicting `env_path` method
