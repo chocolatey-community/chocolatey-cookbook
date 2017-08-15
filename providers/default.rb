@@ -83,7 +83,7 @@ end
 def cmd_args
   output = ''
   output += " -source #{@current_resource.source}" if @current_resource.source
-  output += " -ia '#{@current_resource.args}'" unless @current_resource.args.to_s.empty?
+  output += " --ia '#{@current_resource.args}'" unless @current_resource.args.to_s.empty?
   @current_resource.options.each do |k, v|
     output += " -#{k}"
     output += " #{v}" if v
