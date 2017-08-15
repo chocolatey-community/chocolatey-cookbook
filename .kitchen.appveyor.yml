@@ -2,7 +2,7 @@
 driver:
   name: proxy
   host: localhost
-  reset_command: "del $env:ChocolateyInstall -Recurse -Force"
+  reset_command: "if(Test-Path $env:ChocolateyInstall) { del $env:ChocolateyInstall -Recurse -Force }"
   port: 5985
   username: <%= ENV["machine_user"] %>
   password: <%= ENV["machine_pass"] %>
