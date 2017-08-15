@@ -6,4 +6,7 @@
 
 source 'https://rubygems.org'
 
+gem 'cookstyle'
+gem 'foodcritic'
+gem 'rake'
 gem 'stove'
