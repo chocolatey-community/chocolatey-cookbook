@@ -20,6 +20,10 @@ module Chocolatey
       File.join(chocolatey_install, 'lib', 'chocolatey')
     end
 
+    def chocolatey_config_file
+      File.join(chocolatey_install, 'config', 'chocolatey.config')
+    end
+
     # Check if Chocolatey is installed
     def chocolatey_installed?
       return @is_chocolatey_installed if @is_chocolatey_installed

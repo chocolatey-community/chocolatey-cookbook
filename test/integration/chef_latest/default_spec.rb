@@ -18,3 +18,9 @@ end
 describe file(chocolatey_nupkg) do
   it { should exist }
 end
+
+describe command("#{choco_exe} sources list") do
+  its(:stdout) { should match(%r{test_source - http://test.com/api/}) }
+  its(:stdout) { should match(/test_source2 - \\\\testing\\folder/) }
+  its(:stdout) { should_not match(%r{chocolatey - https://chocolatey.org/api/v2/}) }
+end
