@@ -41,6 +41,8 @@ Attribute                                     | Description                     
 # Resources
 
 - [chocolatey](#chocolatey)
+- [chocolatey_source](#chocolatey_source)
+- [chocolatey_sources](#chocolatey_sources)
 
 ## chocolatey
 
@@ -59,6 +61,32 @@ Attribute                                     | Description                     
 - version: The version of the package to use.
 - args: arguments to the installation.
 - options: Hash of additional options to be sent to `choco.exe`
+
+## chocolatey_source
+
+Configures/updates a named chocolatey source
+
+### Actions
+
+- add: Add/update the given source
+- remove: Remove the given source
+
+### Resource Properties
+
+- name: Name of the source to add/remove (default name)
+- source: The URI of the source (ignored when removing)
+
+## chocolatey_sources
+
+Manages the set of chocolatey sources for a machine
+
+### Actions
+
+- manage: Add missing sources, and remove superfluous ones
+
+### Resource Properties
+
+- sources: A hash of source Name => URI pairs
 
 # Examples
 
@@ -87,6 +115,19 @@ end
 chocolatey "some_private_secure_package" do
   source "https://some.proget/feed"
   options ({'u' => 'username', 'p' => 'password'})
+end
+
+chocolatey_source 'my_private_feed' do
+  source 'https://my.private/feed'
+end
+
+sources = {
+  'my_private_feed' => 'https://my.private/feed',
+  'chocolatey' => 'https://chocolatey.org/api/v2/'
+}
+
+chocolatey_sources 'Manage Choco Sources' do
+  source 'https://my.private/feed'
 end
 
 chocolatey 'DotNet4.5'

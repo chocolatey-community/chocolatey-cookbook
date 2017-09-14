@@ -7,3 +7,12 @@ git File.join(ENV['TEMP'], 'chocolatey-cookbook') do
   revision 'master'
   action :sync
 end
+
+test_sources = {
+  'test_source' => 'http://test.com/api/',
+  'test_source2' => '\\\\testing\\folder',
+}
+
+chocolatey_sources 'chocolatey.sources' do
+  sources test_sources
+end
