@@ -11,6 +11,4 @@ issues_url 'https://github.com/chocolatey/chocolatey-cookbook/issues'
 
 supports 'windows'
 
-depends 'windows', '>= 1.38'
-
 chef_version '>= 12.7' if respond_to?(:chef_version)
