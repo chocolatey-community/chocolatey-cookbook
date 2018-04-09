@@ -6,11 +6,11 @@ description      'Install chocolatey and packages on Windows'
 long_description 'Installs the Chocolatey package manager for Windows and provides a Chef resource for installing nuget packages from https://chocolatey.org/'
 version          '1.2.1'
 
-source_url 'https://github.com/chocolatey/chocolatey-cookbook' if defined?(:source_url)
-issues_url 'https://github.com/chocolatey/chocolatey-cookbook/issues' if defined?(:issues_url)
+source_url 'https://github.com/chocolatey/chocolatey-cookbook'
+issues_url 'https://github.com/chocolatey/chocolatey-cookbook/issues'
 
 supports 'windows'
 
 depends 'windows', '>= 1.38'
 
-chef_version '>= 11.6.0' if respond_to?(:chef_version)
+chef_version '>= 12.7' if respond_to?(:chef_version)
