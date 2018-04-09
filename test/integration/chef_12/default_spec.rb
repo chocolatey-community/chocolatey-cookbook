@@ -11,18 +11,10 @@ describe command("#{choco_exe} list -l chocolatey") do
   its(:stdout) { should match(/[1-9] packages installed\./) }
 end
 
-describe command("#{choco_exe} list -l git.install") do
-  its(:stdout) { should match(/1 packages installed\./) }
-end
-
 describe command("#{choco_exe} --version") do
   its(:stdout) { should eq("0.10.5\r\n") }
 end
 
 describe file(chocolatey_nupkg) do
-  it { should exist }
-end
-
-describe file(File.join('$env:temp', 'chocolatey-cookbook', 'metadata.rb')) do
   it { should exist }
 end
