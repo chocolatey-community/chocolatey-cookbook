@@ -1,5 +1,17 @@
 # Changelog for Chocolatey cookbook
 
+### v2.0.0 (2018-05-01)
+
+#### Breaking Change
+
+The package LWRP has been removed from this cookbook. chocolatey_package was integrated into Chef 12.7, which was released in Feb 2016. This cookbook now requires Chef 12.7 or later.
+
+#### Other Changes
+
+- This cookbook no longer requires the Windows cookbook
+- The install script has been updated to the latest Chocolatey install script
+- Converted testing to use Delivery Local Mode from within ChefDK
+
 ### v1.2.1 (2017-08-20)
 
 * Explicitly use the double-dash long option names for `--source` and `--installargs`
