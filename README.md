@@ -2,7 +2,7 @@
 
 [![Cookbook Version](https://img.shields.io/cookbook/v/chocolatey.svg)](https://supermarket.getchef.com/cookbooks/chocolatey) [![Build Status](http://img.shields.io/travis/chocolatey/chocolatey-cookbook/master.svg)](https://travis-ci.org/chocolatey/chocolatey-cookbook)
 
-Install Chocolatey with the default recipe and manage packages with a handy resource/provider.
+Install Chocolatey with the default recipe.
 
 ## Requirements
 
