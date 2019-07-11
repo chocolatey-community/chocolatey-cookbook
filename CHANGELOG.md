@@ -1,5 +1,9 @@
 # Changelog for Chocolatey cookbook
 
+## v2.0.2 (2019-07-11)
+
+- Add `['chocolatey']['sensitive']` attribute (default: false) to give users the option to suppress output spam when the install.ps1 file is pushed to the machine.
+
 ## v2.0.1 (2018-07-03)
 
 - Remove mentions of the package provider from the readme and metadata

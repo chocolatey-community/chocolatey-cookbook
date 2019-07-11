@@ -4,7 +4,7 @@ maintainer_email 'guilhem.lettron@youscribe.com'
 license          'Apache-2.0'
 description      'Install Chocolatey on Windows'
 long_description 'Installs the Chocolatey package manager for Windows.'
-version          '2.0.1'
+version          '2.0.2'
 
 source_url 'https://github.com/chocolatey/chocolatey-cookbook'
 issues_url 'https://github.com/chocolatey/chocolatey-cookbook/issues'
