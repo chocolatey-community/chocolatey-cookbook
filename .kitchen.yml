@@ -1,6 +1,9 @@
 ---
 driver:
   name: vagrant
+  customize:
+    cpus: 2
+    memory: 4096
 
 provisioner:
   name: chef_zero
@@ -8,18 +11,32 @@ provisioner:
 platforms:
 - name: windows-2012R2
   driver_config:
-    box: mwrock/Windows2012R2
+    box: tas50/windows_2012r2
+- name: windows-2016
+  driver_config:
+    box: tas50/windows_2016
+- name: windows-2019
+  driver_config:
+    box: tas50/windows_2016
 
 verifier:
   name: inspec
 
 suites:
-  - name: chef_12
+  - name: chef_infra_12
     provisioner:
-      require_chef_omnibus: 12.19.36
+      product_name: chef
+      product_version: 12.15
     run_list:
       - recipe[chocolatey::default]
     attributes:
       chocolatey:
         install_vars:
-          chocolateyVersion: 0.10.5
+          chocolateyVersion: 0.10.15
+  - name: chef_infra_latest
+    run_list:
+      - recipe[chocolatey::default]
+    attributes:
+      chocolatey:
+        install_vars:
+          chocolateyVersion: 0.10.15
