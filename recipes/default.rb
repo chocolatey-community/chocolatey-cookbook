@@ -40,8 +40,9 @@ powershell_script 'Install Chocolatey' do
   not_if { chocolatey_installed? }
 end
 
-chocolatey_package 'chocolatey' do
-  action :upgrade
-  version node['chocolatey']['install_vars']['chocolateyVersion']
-  only_if { node['chocolatey']['upgrade'] }
+if node['chocolatey']['upgrade']
+  chocolatey_package 'chocolatey' do
+    action :upgrade
+    version node['chocolatey']['install_vars']['chocolateyVersion']
+  end
 end
