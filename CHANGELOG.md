@@ -1,8 +1,12 @@
 # Changelog for Chocolatey cookbook
 
-## v2.0.2 (2019-07-11)
+## v3.0.0 (2019-07-11)
 
-- Add `['chocolatey']['sensitive']` attribute (default: false) to give users the option to suppress output spam when the install.ps1 file is pushed to the machine.
+- Add `node['chocolatey']['sensitive']` attribute (default: false) to give users the option to suppress output spam when the install.ps1 file is pushed to the machine.
+- Require Chef Infra Client 12.15 or later
+- Resolve minor Cookstyle warnings
+- Fix `node['chocolatey']['upgrade']` to properly upgrade the `chocolatey` package
+- Upgrade to the latest and greatest Chocolatey install script
 
 ## v2.0.1 (2018-07-03)
 

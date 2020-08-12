@@ -3,7 +3,7 @@ maintainer       'Guilhem Lettron'
 maintainer_email 'guilhem.lettron@youscribe.com'
 license          'Apache-2.0'
 description      'Install Chocolatey on Windows'
-version          '2.0.1'
+version          '3.0.0'
 
 source_url 'https://github.com/chocolatey/chocolatey-cookbook'
 issues_url 'https://github.com/chocolatey/chocolatey-cookbook/issues'
