@@ -30,6 +30,7 @@ cookbook_file install_ps1 do
   action :create
   backup false
   source 'install.ps1'
+  sensitive node['chocolatey']['sensitive']
 end
 
 powershell_script 'Install Chocolatey' do

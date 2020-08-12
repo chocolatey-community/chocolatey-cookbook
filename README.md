@@ -33,6 +33,7 @@ Attribute                                            | Description              
 `['install_vars']['chocolateyVersion']`              | Version of Chocolatey to install, e.g. '0.9.9.11'                                         | String  | nil (download latest version)
 `['install_vars']['chocolateyDownloadUrl']`          | Chocolatey .nupkg file URL. Use this if you host an internal copy of the chocolatey.nupkg | String  | <https://chocolatey.org/api/v2/package/chocolatey> (download from chocolatey.org)
 `['install_vars']['chocolateyUseWindowsCompression']`| To use built-in compression instead of 7zip (requires additional download) set to `true`  | String  | nil (use 7zip)
+`['sensitive']`                                      | When true, will suppress writing the contents of install.ps1 to the console               | Boolean | false
 
 ## Recipes
 
