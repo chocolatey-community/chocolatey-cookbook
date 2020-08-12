@@ -1,5 +1,5 @@
 RSpec.describe 'chocolatey::default' do
-  context 'on Windows 2012r2' do
+  context 'on Windows' do
     let(:proxy) { nil }
     let(:proxy_config) { nil }
     let(:proxy_env) { nil }
@@ -12,8 +12,9 @@ RSpec.describe 'chocolatey::default' do
 
       allow(Chef::Config).to receive(:[]).and_call_original
       allow(Chef::Config).to receive(:[]).with('https_proxy').and_return(proxy_config)
+      allow(Chef::Config).to receive(:[]).with('file_cache_path').and_return('c:/chef/cache')
       ChefSpec::SoloRunner.new(
-        platform: 'windows', version: '2012R2'
+        platform: 'windows'
       ).converge(described_recipe)
     end
 
