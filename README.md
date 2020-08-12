@@ -10,9 +10,9 @@ Install Chocolatey with the default recipe.
 
 - Windows
 
-### Chef
+### Chef Infra Client
 
-- 12.7 or greater
+- 12.15 or greater
 
 ## Notes
 

@@ -1,10 +1,10 @@
 #
-# Cookbook Name:: chocolatey
+# Cookbook:: chocolatey
 # recipe:: default
 # Author:: Guilhem Lettron <guilhem.lettron@youscribe.com>
 #
-# Copyright 2012, Societe Publica.
-# Copyright 2015, Doug Ireton
+# Copyright:: 2012, Societe Publica.
+# Copyright:: 2015, Doug Ireton
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ unless platform_family?('windows')
   return "Chocolatey install not supported on #{node['platform_family']}"
 end
 
-Chef::Resource.send(:include, Chocolatey::Helpers)
+Chef::Resource.include Chocolatey::Helpers
 
 install_ps1 = File.join(Chef::Config['file_cache_path'], 'chocolatey-install.ps1')
 
