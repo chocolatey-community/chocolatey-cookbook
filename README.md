@@ -1,6 +1,6 @@
 # chocolatey Cookbook
 
-[![Cookbook Version](https://img.shields.io/cookbook/v/chocolatey.svg)](https://supermarket.getchef.com/cookbooks/chocolatey) [![Build Status](http://img.shields.io/travis/chocolatey/chocolatey-cookbook/master.svg)](https://travis-ci.org/chocolatey/chocolatey-cookbook)
+[![Cookbook Version](https://img.shields.io/cookbook/v/chocolatey.svg)](https://supermarket.getchef.com/cookbooks/chocolatey) ![delivery](https://github.com/chocolatey-community/chocolatey-cookbook/workflows/delivery/badge.svg)
 
 Install Chocolatey with the default recipe.
 
@@ -10,9 +10,9 @@ Install Chocolatey with the default recipe.
 
 - Windows
 
-### Chef
+### Chef Infra Client
 
-- 12.7 or greater
+- 12.15 or greater
 
 ## Notes
 
