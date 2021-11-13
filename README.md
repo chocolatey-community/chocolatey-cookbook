@@ -27,6 +27,7 @@ All attributes below are pre-pended with `node['chocolatey']`
 Attribute                                            | Description                                                                               | Type    | Default
 ---------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------
 `['upgrade']`                                        | Whether to upgrade Chocolatey if it's already installed                                   | Boolean | false
+`['install_vars']['chocolateyIgnoreProxy']`          | Ignore proxy for Chocolatey install script                                                | String  | nil
 `['install_vars']['chocolateyProxyLocation']`        | HTTPS proxy for Chocolatey install script                                                 | String  | Chef::Config['https_proxy'] or ENV['https_proxy']
 `['install_vars']['chocolateyProxyUser']`            | Proxy user for authenticating proxies                                                     | String  | nil
 `['install_vars']['chocolateyProxyPassword']`        | Proxy user password                                                                       | String  | nil
