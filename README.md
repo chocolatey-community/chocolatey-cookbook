@@ -1,6 +1,7 @@
 # chocolatey Cookbook
 
-[![Cookbook Version](https://img.shields.io/cookbook/v/chocolatey.svg)](https://supermarket.getchef.com/cookbooks/chocolatey) ![delivery](https://github.com/chocolatey-community/chocolatey-cookbook/workflows/delivery/badge.svg)
+[![Cookbook Version](https://img.shields.io/cookbook/v/chocolatey.svg)](https://supermarket.getchef.com/cookbooks/chocolatey)
+[![CI State](https://github.com/chocolatey-community/chocolatey-cookbook/workflows/ci/badge.svg)](https://github.com/chocolatey-community/chocolatey-cookbook/actions?query=workflow%3Aci)
 
 Install Chocolatey with the default recipe.
 
