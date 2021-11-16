@@ -1,5 +1,12 @@
 # Changelog for Chocolatey cookbook
 
+## Unreleased
+
+- Add `['install_vars']['chocolateyIgnoreProxy']` to the readme
+- Add yaml/markdown linting and resolve warnings
+- Move testing to Github Actions
+- Update delivery toml
+
 ## v3.0.0 (2020-08-12)
 
 - Add `node['chocolatey']['sensitive']` attribute (default: false) to give users the option to suppress output spam when the install.ps1 file is pushed to the machine.

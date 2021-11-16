@@ -1,6 +1,7 @@
 # chocolatey Cookbook
 
-[![Cookbook Version](https://img.shields.io/cookbook/v/chocolatey.svg)](https://supermarket.getchef.com/cookbooks/chocolatey) ![delivery](https://github.com/chocolatey-community/chocolatey-cookbook/workflows/delivery/badge.svg)
+[![Cookbook Version](https://img.shields.io/cookbook/v/chocolatey.svg)](https://supermarket.getchef.com/cookbooks/chocolatey)
+[![CI State](https://github.com/chocolatey-community/chocolatey-cookbook/workflows/ci/badge.svg)](https://github.com/chocolatey-community/chocolatey-cookbook/actions?query=workflow%3Aci)
 
 Install Chocolatey with the default recipe.
 
@@ -27,6 +28,7 @@ All attributes below are pre-pended with `node['chocolatey']`
 Attribute                                            | Description                                                                               | Type    | Default
 ---------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------
 `['upgrade']`                                        | Whether to upgrade Chocolatey if it's already installed                                   | Boolean | false
+`['install_vars']['chocolateyIgnoreProxy']`          | Ignore proxy for Chocolatey install script                                                | String  | nil
 `['install_vars']['chocolateyProxyLocation']`        | HTTPS proxy for Chocolatey install script                                                 | String  | Chef::Config['https_proxy'] or ENV['https_proxy']
 `['install_vars']['chocolateyProxyUser']`            | Proxy user for authenticating proxies                                                     | String  | nil
 `['install_vars']['chocolateyProxyPassword']`        | Proxy user password                                                                       | String  | nil
